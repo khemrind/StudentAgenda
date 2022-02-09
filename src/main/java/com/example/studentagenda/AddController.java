@@ -18,9 +18,7 @@ public class AddController {
             Instance = this;
         }
         formPane.getChildren().add(Main.LoadFXML("addClassView"));
+
     }
-
-
-
 
 }

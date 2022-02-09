@@ -2,6 +2,7 @@ package com.example.studentagenda;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -17,19 +18,27 @@ public class Main {
     public Pane contentPane;
 
     public void initialize() {
+        Data.initialize();
         if (Instance == null) {
             Instance = this;
         }
         contentPane.getChildren().add(LoadFXML("listView"));
     }
 
-    public static javafx.scene.Node LoadFXML(String viewname) {
-        try {
-            return new FXMLLoader(Instance.getClass()
+    public static Node LoadFXML(String viewname) {
+        if (Data.cache.get(viewname) == null) {
+            try {
+                Node node = new FXMLLoader(Instance.getClass()
                     .getResource(viewname + ".fxml")).load();
-        } catch (Exception ex) {
-            System.out.println(ex);
-        } return null;
+                Data.cache.put(viewname, node);
+                return node;
+            } catch (Exception ex) {
+                System.out.println(ex);
+                return null;
+            }
+        } else {
+            return Data.cache.get(viewname);
+        }
     }
 
     public void addButton_Clicked(ActionEvent actionEvent) {

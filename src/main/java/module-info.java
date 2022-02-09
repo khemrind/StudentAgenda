@@ -6,6 +6,8 @@ module com.example.studentagenda {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
 
+    requires com.google.gson;
+
     opens com.example.studentagenda to javafx.fxml;
     exports com.example.studentagenda;
 }
