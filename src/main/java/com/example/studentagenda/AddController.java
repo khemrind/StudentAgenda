@@ -2,23 +2,26 @@ package com.example.studentagenda;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class AddController {
 
-    public static AddController Instance;
-
+    public VBox mainBox;
     public MenuButton menuButton;
-    public Pane formPane;
+    public ListView itemList;
 
     @FXML
     private void initialize() {
-        if (Instance == null) {
-            Instance = this;
-        }
-        formPane.getChildren().add(Main.LoadFXML("addClassView"));
-
+        AnchorPane.setBottomAnchor(mainBox, 0d);
+        AnchorPane.setTopAnchor(mainBox, 0d);
+        AnchorPane.setLeftAnchor(mainBox, 0d);
+        AnchorPane.setRightAnchor(mainBox, 0d);
     }
+
 
 }

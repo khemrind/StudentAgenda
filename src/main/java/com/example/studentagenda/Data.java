@@ -24,6 +24,9 @@ public class Data {
     public static void initialize() {
         cache = new HashMap<>();
         classes = new ArrayList<>();
+        classes.add(new Class());
+        classes.add(new Class());
+        classes.add(new Class());
         if (!new File(path).exists()) {
             save();
         } else {

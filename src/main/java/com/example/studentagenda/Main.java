@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
 
 public class Main {
 
@@ -22,14 +23,15 @@ public class Main {
         if (Instance == null) {
             Instance = this;
         }
-        contentPane.getChildren().add(LoadFXML("listView"));
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(CacheFXML("listView"));
     }
 
-    public static Node LoadFXML(String viewname) {
+    public static Node CacheFXML(String viewname) {
         if (Data.cache.get(viewname) == null) {
             try {
-                Node node = new FXMLLoader(Instance.getClass()
-                    .getResource(viewname + ".fxml")).load();
+                Node node = new FXMLLoader().load(Instance.getClass()
+                        .getResource(viewname + ".fxml").openStream());
                 Data.cache.put(viewname, node);
                 return node;
             } catch (Exception ex) {
@@ -41,19 +43,31 @@ public class Main {
         }
     }
 
+    public static <Type> Pair<Type, Node> InstanceFXML(String viewname) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Node node = loader.load(Instance.getClass()
+                    .getResource(viewname + ".fxml").openStream());
+            return new Pair<>(loader.getController(), node);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
     public void addButton_Clicked(ActionEvent actionEvent) {
         contentPane.getChildren().clear();
-        contentPane.getChildren().add(LoadFXML("addView"));
+        contentPane.getChildren().add(CacheFXML("addView"));
     }
 
     public void listButton_Clicked(ActionEvent actionEvent) {
         contentPane.getChildren().clear();
-        contentPane.getChildren().add(LoadFXML("listView"));
+        contentPane.getChildren().add(CacheFXML("listView"));
     }
 
     public void settingsButton_Clicked(ActionEvent actionEvent) {
         contentPane.getChildren().clear();
-        contentPane.getChildren().add(LoadFXML("settingsView"));
+        contentPane.getChildren().add(CacheFXML("settingsView"));
     }
 
 
