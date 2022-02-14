@@ -17,16 +17,13 @@ public class Data {
     public static List<Class> classes;
     public static String path = System.getProperty("user.home") + "\\Documents\\StudentAgenda.json";
 
-    private static Gson store = new GsonBuilder()
+    private static final Gson store = new GsonBuilder()
             .setPrettyPrinting()
             .create();
 
     public static void initialize() {
         cache = new HashMap<>();
         classes = new ArrayList<>();
-        classes.add(new Class());
-        classes.add(new Class());
-        classes.add(new Class());
         if (!new File(path).exists()) {
             save();
         } else {

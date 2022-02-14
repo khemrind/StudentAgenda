@@ -26,8 +26,7 @@ public class Main {
         }
         contentPane.getChildren().clear();
         contentPane.getChildren().add(CacheFXML("listView"));
-        Platform.runLater(() -> contentPane.requestFocus());
-
+        //Platform.runLater(() -> contentPane.requestFocus());
     }
 
     public static Node CacheFXML(String viewname) {
@@ -64,19 +63,16 @@ public class Main {
     }
 
     public void addButton_Clicked(ActionEvent actionEvent) {
-        contentPane.requestFocus();
         contentPane.getChildren().clear();
         contentPane.getChildren().add(CacheFXML("addView"));
     }
 
     public void listButton_Clicked(ActionEvent actionEvent) {
-        contentPane.requestFocus();
         contentPane.getChildren().clear();
         contentPane.getChildren().add(CacheFXML("listView"));
     }
 
     public void settingsButton_Clicked(ActionEvent actionEvent) {
-        contentPane.requestFocus();
         contentPane.getChildren().clear();
         contentPane.getChildren().add(CacheFXML("settingsView"));
     }
