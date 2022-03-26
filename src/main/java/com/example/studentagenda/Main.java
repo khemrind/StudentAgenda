@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
@@ -13,19 +14,12 @@ public class Main {
 
     public static Main Instance;
 
-    public Button addButton;
-    public Button listButton;
-    public Button settingsButton;
-    public Label dateLabel;
-    public Pane contentPane;
-
     public void initialize() {
+        // https://kordamp.org/ikonli/cheat-sheet-fluentui.html
         Data.initialize();
         if (Instance == null) {
             Instance = this;
         }
-        contentPane.getChildren().clear();
-        contentPane.getChildren().add(CacheFXML("listView"));
         //Platform.runLater(() -> contentPane.requestFocus());
     }
 
@@ -61,20 +55,36 @@ public class Main {
         Thread thread = new Thread(action::run);
         thread.start();
     }
-
+/*
     public void addButton_Clicked(ActionEvent actionEvent) {
         contentPane.getChildren().clear();
-        contentPane.getChildren().add(CacheFXML("addView"));
+        Node loaded = CacheFXML("addView");
+        contentPane.getChildren().add(loaded);
+        setZeroAnchor(loaded);
+        contentLabel.setText("?");
     }
 
     public void listButton_Clicked(ActionEvent actionEvent) {
         contentPane.getChildren().clear();
-        contentPane.getChildren().add(CacheFXML("listView"));
+        Node loaded = CacheFXML("listView");
+        contentPane.getChildren().add(loaded);
+        setZeroAnchor(loaded);
+        contentLabel.setText("Agenda");
     }
 
     public void settingsButton_Clicked(ActionEvent actionEvent) {
         contentPane.getChildren().clear();
-        contentPane.getChildren().add(CacheFXML("settingsView"));
+        Node loaded = CacheFXML("settingsView");
+        contentPane.getChildren().add(loaded);
+        setZeroAnchor(loaded);
+        contentLabel.setText("Settings");
+    }*/
+
+    public void setZeroAnchor(Node node) {
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
     }
 
 }

@@ -13,7 +13,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mainView.fxml"));
         double fixed_width = 500;
         Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root, fixed_width, 600);
+        Scene scene = new Scene(root, fixed_width, 660);
         stage.setTitle("Student Agenda");
         stage.setMaxWidth(fixed_width);
         stage.setMinWidth(fixed_width);
