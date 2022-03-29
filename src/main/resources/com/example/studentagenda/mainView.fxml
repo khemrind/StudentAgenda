@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -14,6 +17,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <AnchorPane prefHeight="660.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.Main">
@@ -33,12 +38,42 @@
                                        <children>
                                           <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <CheckBox mnemonicParsing="false" text="Some setting" textFill="#4d4d4d" />
-                                                <CheckBox mnemonicParsing="false" text="Some other setting" textFill="#4d4d4d" />
+                                                <CheckBox mnemonicParsing="false" text="Some setting" textFill="#4d4d4d">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font></CheckBox>
+                                                <CheckBox mnemonicParsing="false" text="Some other setting" textFill="#4d4d4d">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font></CheckBox>
+                                                <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="62.0" spacing="10.0">
+                                                   <children>
+                                                      <Label text="First day of the week" textFill="#4d4d4d">
+                                                         <font>
+                                                            <Font size="11.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <MenuButton mnemonicParsing="false" text="Sunday">
+                                                         <items>
+                                                            <MenuItem mnemonicParsing="false" text="Monday" />
+                                                            <MenuItem mnemonicParsing="false" text="etc" />
+                                                         </items>
+                                                         <font>
+                                                            <Font size="11.0" />
+                                                         </font>
+                                                      </MenuButton>
+                                                   </children>
+                                                </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="10.0" VBox.vgrow="NEVER">
                                                    <children>
-                                                      <Label text="Application Save Path" textFill="#4d4d4d" />
-                                                      <TextField />
+                                                      <Label text="Application Save Path" textFill="#4d4d4d">
+                                                         <font>
+                                                            <Font size="11.0" />
+                                                         </font></Label>
+                                                      <TextField prefHeight="25.0" prefWidth="325.0" text="/system/usr/path/to/documents">
+                                                         <font>
+                                                            <Font size="11.0" />
+                                                         </font></TextField>
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -65,13 +100,33 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" spacing="8.0">
                                  <children>
-                                    <Label text="Add new" />
-                                    <ComboBox promptText="task" />
+                                    <Label text="Add new">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <MenuButton mnemonicParsing="false" text="Task">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="Month" />
+                                          <MenuItem mnemonicParsing="false" text="All" />
+                                       </items>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </MenuButton>
                                     <Label text="to" />
-                                    <ComboBox promptText="category" />
+                                    <MenuButton layoutX="61.0" layoutY="20.0" mnemonicParsing="false" text="Category">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="category" />
+                                          <MenuItem mnemonicParsing="false" text="category" />
+                                       </items>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </MenuButton>
                                  </children>
                                  <padding>
-                                    <Insets left="10.0" right="10.0" />
+                                    <Insets left="9.0" right="9.0" />
                                  </padding>
                               </HBox>
                               <AnchorPane VBox.vgrow="ALWAYS">
@@ -84,26 +139,41 @@
                                                    <children>
                                                       <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                          <children>
-                                                            <Label text="Name :" textFill="#4d4d4d" />
-                                                            <TextField />
+                                                            <Label text="Name" textFill="#4d4d4d">
+                                                               <font>
+                                                                  <Font size="11.0" />
+                                                               </font></Label>
+                                                            <TextField>
+                                                               <font>
+                                                                  <Font size="11.0" />
+                                                               </font></TextField>
                                                          </children>
                                                       </HBox>
                                                       <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="10.0">
                                                          <children>
-                                                            <Label text="Tag Color :" textFill="#4d4d4d" />
+                                                            <Label text="Tag Color" textFill="#4d4d4d">
+                                                               <font>
+                                                                  <Font size="11.0" />
+                                                               </font></Label>
                                                             <ColorPicker />
                                                          </children>
                                                       </HBox>
                                                       <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="45.0" spacing="10.0">
                                                          <children>
-                                                            <Label text="Starting Date :" textFill="#4d4d4d" />
-                                                            <DatePicker />
+                                                            <Label text="Starting Date" textFill="#4d4d4d">
+                                                               <font>
+                                                                  <Font size="11.0" />
+                                                               </font></Label>
+                                                            <DatePicker prefWidth="120.0" />
                                                          </children>
                                                       </HBox>
                                                       <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="80.0" spacing="10.0">
                                                          <children>
-                                                            <Label text="Ending Date :" textFill="#4d4d4d" />
-                                                            <DatePicker />
+                                                            <Label text="Ending Date" textFill="#4d4d4d">
+                                                               <font>
+                                                                  <Font size="11.0" />
+                                                               </font></Label>
+                                                            <DatePicker prefWidth="120.0" />
                                                          </children>
                                                       </HBox>
                                                       <Separator prefWidth="200.0">
@@ -137,24 +207,239 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" spacing="8.0" style="-fx-border-radius: 2; -fx-border-color: c8c8c8; -fx-background-color: e9e9e9;">
                                  <children>
-                                    <Label text="Show :" />
-                                    <ComboBox promptText="Week" />
+                                    <Label text="Show :">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font></Label>
+                                    <MenuButton mnemonicParsing="false" text="Week">
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" text="Month" />
+                                        <MenuItem mnemonicParsing="false" text="All" />
+                                      </items>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </MenuButton>
                                     <Label text="Filter :" />
-                                    <ComboBox promptText="None" />
+                                    <MenuButton layoutX="61.0" layoutY="20.0" mnemonicParsing="false" text="None">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="category" />
+                                          <MenuItem mnemonicParsing="false" text="category" />
+                                       </items>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </MenuButton>
+                                    <Label text="Tags :" />
+                                    <MenuButton mnemonicParsing="false" text="All">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="Missed" />
+                                          <MenuItem mnemonicParsing="false" text="custom" />
+                                       </items>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </MenuButton>
                                  </children>
                                  <padding>
-                                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+                                    <Insets bottom="7.0" left="9.0" right="9.0" top="7.0" />
                                  </padding>
                               </HBox>
                               <AnchorPane VBox.vgrow="ALWAYS">
                                  <children>
                                     <TitledPane animated="false" collapsible="false" text="This week" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" />
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                                             <content>
+                                                <VBox spacing="6.0">
+                                                   <children>
+                                                      <AnchorPane opacity="0.75" prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
+                                                         <children>
+                                                            <Label layoutX="14.0" layoutY="14.0" text="Assignment 5 The Essentials of Writing" textFill="#363636" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0" />
+                                                            <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
+                                                               <children>
+                                                                  <Label text="12:00 AM" textFill="#757575">
+                                                                     <font>
+                                                                        <Font name="System Bold" size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
+                                                                     <font>
+                                                                        <Font name="System Italic" size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                            <FontIcon iconColor="#da4f4f" iconLiteral="fltrmz-timer-off-24" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
+                                                            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                                                            <Button mnemonicParsing="false" opacity="0.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                         <VBox.margin>
+                                                            <Insets />
+                                                         </VBox.margin>
+                                                      </AnchorPane>
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="16.0" spacing="5.0">
+                                                         <children>
+                                                            <Separator prefWidth="20.0" />
+                                                            <Label text="Friday, March 24, 2022" textFill="#363636" HBox.hgrow="ALWAYS">
+                                                               <font>
+                                                                  <Font size="11.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                         </children>
+                                                         <VBox.margin>
+                                                            <Insets />
+                                                         </VBox.margin>
+                                                      </HBox>
+                                                      <AnchorPane prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
+                                                         <children>
+                                                            <Label layoutX="14.0" layoutY="14.0" text="Assignment 5 The Essentials of Writing" textFill="#363636" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0" />
+                                                            <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
+                                                               <children>
+                                                                  <Label text="12:00 AM" textFill="#757575">
+                                                                     <font>
+                                                                        <Font name="System Bold" size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
+                                                                     <font>
+                                                                        <Font name="System Italic" size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                            <FontIcon iconColor="#545252" iconLiteral="fltrmz-timer-16" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
+                                                            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                                                            <Button mnemonicParsing="false" opacity="0.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
+                                                         <children>
+                                                            <Label layoutX="14.0" layoutY="14.0" text="Assignment 5 The Essentials of Writing" textFill="#363636" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0" />
+                                                            <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
+                                                               <children>
+                                                                  <Label text="12:00 AM" textFill="#757575">
+                                                                     <font>
+                                                                        <Font name="System Bold" size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
+                                                                     <font>
+                                                                        <Font name="System Italic" size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                            <FontIcon iconColor="#545252" iconLiteral="fltrmz-timer-16" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
+                                                            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7e1fff" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane opacity="0.75" prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
+                                                         <children>
+                                                            <Label layoutX="14.0" layoutY="14.0" text="Assignment 5 The Essentials of Writing" textFill="#363636" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0" />
+                                                            <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
+                                                               <children>
+                                                                  <Label text="12:00 AM" textFill="#757575">
+                                                                     <font>
+                                                                        <Font name="System Bold" size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
+                                                                     <font>
+                                                                        <Font name="System Italic" size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                            <FontIcon iconColor="#3a8d36" iconLiteral="fltfal-checkmark-16" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
+                                                            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff9d1f" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </padding>
+                                                </VBox>
+                                             </content>
+                                          </ScrollPane>
                                       </content>
                                     </TitledPane>
                                  </children>
                               </AnchorPane>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="8.0" style="-fx-border-radius: 2; -fx-border-color: c8c8c8; -fx-background-color: e9e9e9;">
+                                 <children>
+                                    <Label text="Tag with">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <MenuButton mnemonicParsing="false" text="custom">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="custom" />
+                                          <MenuItem mnemonicParsing="false" text="custom" />
+                                       </items>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </MenuButton>
+                                    <Separator orientation="VERTICAL" />
+                                    <Button mnemonicParsing="false">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                       <graphic>
+                                          <HBox alignment="CENTER_LEFT" spacing="3.0">
+                                             <children>
+                                                <FontIcon iconLiteral="fltral-delete-28" iconSize="14" />
+                                                <Label text="Delete">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </graphic>
+                                    </Button>
+                                    <Button layoutX="147.0" layoutY="18.0" mnemonicParsing="false">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                       <graphic>
+                                          <HBox alignment="CENTER_LEFT" spacing="3.0">
+                                             <children>
+                                                <FontIcon iconLiteral="fltral-edit-32" iconSize="14" />
+                                                <Label text="Edit">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </graphic>
+                                    </Button>
+                                    <Button layoutX="229.0" layoutY="18.0" mnemonicParsing="false">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                       <graphic>
+                                          <HBox alignment="CENTER_LEFT" spacing="3.0">
+                                             <children>
+                                                <FontIcon iconLiteral="fltfal-checkmark-16" iconSize="14" />
+                                                <Label text="Complete">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="7.0" left="9.0" right="9.0" top="7.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                         </VBox>
                         <Separator layoutX="20.0" layoutY="20.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />

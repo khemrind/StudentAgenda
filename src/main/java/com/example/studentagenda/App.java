@@ -21,6 +21,9 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
         root.requestFocus();
+
+        // load data
+        Data.initialize();
     }
 
     public static void main(String[] args) {

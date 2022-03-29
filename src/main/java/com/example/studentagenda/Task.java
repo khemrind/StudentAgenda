@@ -2,12 +2,12 @@ package com.example.studentagenda;
 
 import java.util.Date;
 
-public class Item {
+public class Task {
     public String name;
     public String description;
     public Date time;
 
-    public Item() {
+    public Task() {
         name = "new item";
         description = "new description";
         time = new Date();
