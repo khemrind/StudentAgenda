@@ -35,3 +35,9 @@ public class App extends Application {
         Data.save();
     }
 }
+
+// extensions
+
+interface Action {
+    void run();
+}

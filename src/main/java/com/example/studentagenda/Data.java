@@ -6,10 +6,7 @@ import javafx.scene.Node;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Data {
 
@@ -30,7 +27,7 @@ public class Data {
     public static void save() {
         try {
             Writer write = Files.newBufferedWriter(Paths.get(path));
-            serializer.toJson(4, write);
+            serializer.toJson(Agenda.Instance, write);
             write.close();
         } catch (Exception ex) {
             System.out.println(ex);
