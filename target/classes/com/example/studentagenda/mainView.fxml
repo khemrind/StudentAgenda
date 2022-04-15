@@ -286,123 +286,6 @@
                                                    <padding>
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </padding>
-                                                   <AnchorPane opacity="0.75" prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
-                                                      <VBox.margin>
-                                                         <Insets />
-                                                      </VBox.margin>
-                                                      <Label layoutX="14.0" layoutY="14.0" text="Assignment 5 The Essentials of Writing" textFill="#363636" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0" />
-                                                      <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
-                                                         <children>
-                                                            <Label text="12:00 AM" textFill="#757575">
-                                                               <font>
-                                                                  <Font name="System Bold" size="11.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
-                                                               <font>
-                                                                  <Font name="System Italic" size="11.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                      </HBox>
-                                                      <FontIcon iconColor="#da4f4f" iconLiteral="fltrmz-timer-off-24" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
-                                                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
-                                                      <Button mnemonicParsing="false" opacity="0.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                   </AnchorPane>
-                                                   <HBox alignment="CENTER_LEFT" prefHeight="16.0" spacing="5.0">
-                                                      <VBox.margin>
-                                                         <Insets />
-                                                      </VBox.margin>
-                                                      <Separator prefWidth="20.0" />
-                                                      <Label text="Friday, March 24, 2022" textFill="#363636" HBox.hgrow="ALWAYS">
-                                                         <font>
-                                                            <Font size="11.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                   </HBox>
-                                                   <AnchorPane prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
-                                                      <Label layoutX="14.0" layoutY="14.0" text="Assignment 5 The Essentials of Writing" textFill="#363636" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0" />
-                                                      <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
-                                                         <Label text="12:00 AM" textFill="#757575">
-                                                            <font>
-                                                               <Font name="System Bold" size="11.0" />
-                                                            </font>
-                                                         </Label>
-                                                         <Label text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
-                                                            <font>
-                                                               <Font name="System Italic" size="11.0" />
-                                                            </font>
-                                                         </Label>
-                                                      </HBox>
-                                                      <FontIcon iconColor="#545252" iconLiteral="fltrmz-timer-16" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
-                                                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
-                                                      <Button mnemonicParsing="false" opacity="0.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                   </AnchorPane>
-                                                   <AnchorPane prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
-                                                      <children>
-                                                         <HBox alignment="CENTER_LEFT" layoutX="21.0" layoutY="9.0" spacing="4.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0">
-                                                            <children>
-                                                               <Label text="Assignment 5 The Essentials of Writing" textFill="#363636">
-                                                                  <HBox.margin>
-                                                                     <Insets right="1.0" />
-                                                                  </HBox.margin>
-                                                               </Label>
-                                                               <Label style="-fx-background-color: #d4d4d4; -fx-background-radius: 1;" text="Something" textFill="#4d4d4d">
-                                                                  <font>
-                                                                     <Font name="System Italic" size="10.0" />
-                                                                  </font>
-                                                                  <padding>
-                                                                     <Insets left="4.0" right="4.0" />
-                                                                  </padding>
-                                                               </Label>
-                                                               <Label layoutX="219.0" layoutY="11.0" style="-fx-background-color: #d4d4d4; -fx-background-radius: 1;" text="Another" textFill="#4d4d4d">
-                                                                  <font>
-                                                                     <Font name="System Italic" size="10.0" />
-                                                                  </font>
-                                                                  <padding>
-                                                                     <Insets left="4.0" right="4.0" />
-                                                                  </padding>
-                                                               </Label>
-                                                            </children>
-                                                         </HBox>
-                                                         <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
-                                                            <Label text="12:00 AM" textFill="#757575">
-                                                               <font>
-                                                                  <Font name="System Bold" size="11.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
-                                                               <font>
-                                                                  <Font name="System Italic" size="11.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </HBox>
-                                                         <FontIcon iconColor="#545252" iconLiteral="fltrmz-timer-16" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
-                                                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7e1fff" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
-                                                      </children>
-                                                   </AnchorPane>
-                                                   <AnchorPane opacity="0.75" prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
-                                                      <children>
-                                                         <Label layoutX="14.0" layoutY="14.0" text="Assignment 5 The Essentials of Writing" textFill="#363636" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0" />
-                                                         <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
-                                                            <children>
-                                                               <Label text="12:00 AM" textFill="#757575">
-                                                                  <font>
-                                                                     <Font name="System Bold" size="11.0" />
-                                                                  </font>
-                                                               </Label>
-                                                               <Label text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
-                                                                  <font>
-                                                                     <Font name="System Italic" size="11.0" />
-                                                                  </font>
-                                                               </Label>
-                                                            </children>
-                                                         </HBox>
-                                                         <FontIcon iconColor="#3a8d36" iconLiteral="fltfal-checkmark-16" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
-                                                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff9d1f" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
-                                                      </children>
-                                                   </AnchorPane>
                                                 </VBox>
                                              </content>
                                           </ScrollPane>
@@ -410,7 +293,7 @@
                                     </TitledPane>
                                  </children>
                               </AnchorPane>
-                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="8.0" style="-fx-border-radius: 2; -fx-border-color: c8c8c8; -fx-background-color: e9e9e9;">
+                              <HBox fx:id="selectedHBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="8.0" style="-fx-border-radius: 2; -fx-border-color: c8c8c8; -fx-background-color: e9e9e9;">
                                  <children>
                                     <Label text="Tag with">
                                        <font>
@@ -427,7 +310,7 @@
                                        </font>
                                     </MenuButton>
                                     <Separator orientation="VERTICAL" />
-                                    <Button mnemonicParsing="false">
+                                    <Button fx:id="deleteButton" mnemonicParsing="false">
                                        <font>
                                           <Font size="11.0" />
                                        </font>
@@ -435,7 +318,7 @@
                                           <HBox alignment="CENTER_LEFT" spacing="3.0">
                                              <children>
                                                 <FontIcon iconLiteral="fltral-delete-28" iconSize="14" />
-                                                <Label fx:id="deleteButton" text="Delete">
+                                                <Label text="Delete">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font>
@@ -444,7 +327,7 @@
                                           </HBox>
                                        </graphic>
                                     </Button>
-                                    <Button layoutX="147.0" layoutY="18.0" mnemonicParsing="false">
+                                    <Button fx:id="editButton" layoutX="147.0" layoutY="18.0" mnemonicParsing="false">
                                        <font>
                                           <Font size="11.0" />
                                        </font>
@@ -452,7 +335,7 @@
                                           <HBox alignment="CENTER_LEFT" spacing="3.0">
                                              <children>
                                                 <FontIcon iconLiteral="fltral-edit-32" iconSize="14" />
-                                                <Label fx:id="editButton" text="Edit">
+                                                <Label text="Edit">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font>
@@ -461,7 +344,7 @@
                                           </HBox>
                                        </graphic>
                                     </Button>
-                                    <Button layoutX="229.0" layoutY="18.0" mnemonicParsing="false" >
+                                    <Button fx:id="completeButton" layoutX="229.0" layoutY="18.0" mnemonicParsing="false">
                                        <font>
                                           <Font size="11.0" />
                                        </font>

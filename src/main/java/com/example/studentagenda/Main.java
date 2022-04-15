@@ -27,10 +27,18 @@ public class Main {
     public MenuButton filterStatusButton;
     public MenuButton filterCategoryButton;
     public MenuButton filterTagButton;
+
+    public HBox selectedHBox;
     public MenuButton applyTagButton;
-    public Label deleteButton;
-    public Label editButton;
+    public Button completeButton;
+    public Button deleteButton;
+    public Button editButton;
+
     public VBox taskVBox;
+
+
+
+    private TaskView selectedTask;
 
     // icons: https://kordamp.org/ikonli/cheat-sheet-fluentui.html
 
@@ -40,20 +48,31 @@ public class Main {
             Instance = this;
         }
 
+        selectedHBox.setDisable(true);
+
         // initial testing
         taskVBox.getChildren().add(TaskView.separator("Saturday, April 22, 2022"));
 
-        Agenda.addCategory("misc");
-        Category category = Agenda.getCategory("misc");
+        Agenda.addCategory("PHIL 2010 Intro to Philosophy");
+        Category category = Agenda.getCategory("PHIL 2010 Intro to Philosophy");
 
         Task first = new Task();
-        first.name.set("some assignment 1");
-        first.tags.get().add(new Tag("some tag"));
-        first.status.set(Task.Status.InProgess);
+        first.name.set("Writing Assignment 1");
+        first.tags.get().add(new Tag("stupid asf"));
+        first.status.set(Task.Status.Completed);
         category.tasks.add(first);
 
         TaskView.generate(taskVBox.getChildren(), category.tasks);
 
+    }
+
+    public void setSelectedTask(TaskView view) {
+        this.selectedTask = view;
+        if (view == null) {
+            selectedHBox.setDisable(true);
+        } else {
+            selectedHBox.setDisable(false);
+        }
     }
 
     public static Node CacheFXML(String viewname) {

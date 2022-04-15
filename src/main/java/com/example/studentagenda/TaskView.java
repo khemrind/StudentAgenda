@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -32,9 +33,15 @@ public class TaskView {
     public FontIcon statusIcon;
     public Rectangle tagRect;
     public Button overlayButton;
+    public AnchorPane mainPane;
 
     public void initialize() {
+
         statusIcon.setIconSize(17);
+        overlayButton.focusedProperty().addListener((observable, oldv, newv) -> {
+            if (newv == false) { removeFromSelected(); }
+        });
+        overlayButton.setOnAction((event -> publishAsSelected()));
     }
 
     public void assign(Task task) {
@@ -44,6 +51,7 @@ public class TaskView {
         titleLabel.setText(model.name.get());
         timeLabel.setText("12:00 AM");
         categoryLabel.setText(model.getCategoryName());
+        updateStatus(model.status.get());
         tagRect.setFill(Color.BLUEVIOLET);
         for (Tag tag: model.tags.get()) {
             tagHBox.getChildren().add(tag.view());
@@ -69,8 +77,17 @@ public class TaskView {
         }
     }
 
+    private void publishAsSelected() {
+        Main.Instance.setSelectedTask(this);
+    }
+
+    private void removeFromSelected() {
+        Main.Instance.setSelectedTask(null);
+    }
+
     private void updateDeadline(Date deadline) {
         // implement
+        // passed -> mainPane.setOpacity(0.75);
     }
 
     private void updateTags(List<Tag> tags) {

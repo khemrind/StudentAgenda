@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.TaskView">
+<AnchorPane fx:id="mainPane" prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.TaskView">
    <children>
       <HBox fx:id="tagHBox" alignment="CENTER_LEFT" layoutX="21.0" layoutY="9.0" spacing="4.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0">
          <children>
