@@ -21,11 +21,11 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane prefHeight="660.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.Main">
+<AnchorPane prefHeight="660.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.Main">
    <children>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-            <Tab closable="false" text="Settings">
+            <Tab closable="false" text="Settings ">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -40,17 +40,17 @@
                                              <children>
                                                 <CheckBox mnemonicParsing="false" text="Some setting" textFill="#4d4d4d">
                                                    <font>
-                                                      <Font size="11.0" />
+                                                      <Font size="12.0" />
                                                    </font></CheckBox>
                                                 <CheckBox mnemonicParsing="false" text="Some other setting" textFill="#4d4d4d">
                                                    <font>
-                                                      <Font size="11.0" />
+                                                      <Font size="12.0" />
                                                    </font></CheckBox>
                                                 <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="62.0" spacing="10.0">
                                                    <children>
                                                       <Label text="First day of the week" textFill="#4d4d4d">
                                                          <font>
-                                                            <Font size="11.0" />
+                                                            <Font size="12.0" />
                                                          </font>
                                                       </Label>
                                                       <MenuButton fx:id="startWeekSelect" mnemonicParsing="false" text="Sunday">
@@ -59,7 +59,7 @@
                                                             <MenuItem mnemonicParsing="false" text="etc" />
                                                          </items>
                                                          <font>
-                                                            <Font size="11.0" />
+                                                            <Font name="System Italic" size="11.0" />
                                                          </font>
                                                       </MenuButton>
                                                    </children>
@@ -68,7 +68,7 @@
                                                    <children>
                                                       <Label text="Application Save Path" textFill="#4d4d4d">
                                                          <font>
-                                                            <Font size="11.0" />
+                                                            <Font size="12.0" />
                                                          </font></Label>
                                                       <TextField fx:id="pathBox" prefHeight="25.0" prefWidth="325.0" text="/system/usr/path/to/documents">
                                                          <font>
@@ -91,7 +91,7 @@
                   <FontIcon iconLiteral="fltrmz-settings-28" iconSize="15" />
                </graphic>
             </Tab>
-          <Tab closable="false" text="Tasks">
+          <Tab closable="false" text="Tasks ">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -102,20 +102,22 @@
                                  <children>
                                     <Label text="Add new">
                                        <font>
-                                          <Font size="11.0" />
+                                          <Font size="12.0" />
                                        </font>
                                     </Label>
                                     <MenuButton fx:id="addSelectButton" mnemonicParsing="false" text="Task">
                                        <items>
-                                          <MenuItem mnemonicParsing="false" text="Month" />
-                                          <MenuItem mnemonicParsing="false" text="All" />
+                                          <MenuItem mnemonicParsing="false" text="Category" />
                                        </items>
                                        <font>
                                           <Font size="11.0" />
                                        </font>
                                     </MenuButton>
-                                    <Label text="to" />
-                                    <MenuButton fx:id="addSelectCategoryButton" layoutX="61.0" layoutY="20.0" mnemonicParsing="false" text="Category">
+                                    <Label fx:id="toLabel" text="to">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font></Label>
+                                    <MenuButton fx:id="addSelectCategoryButton" layoutX="61.0" layoutY="20.0" mnemonicParsing="false" text="category">
                                        <items>
                                           <MenuItem mnemonicParsing="false" text="category" />
                                           <MenuItem mnemonicParsing="false" text="category" />
@@ -141,7 +143,7 @@
                                                          <children>
                                                             <Label text="Name" textFill="#4d4d4d">
                                                                <font>
-                                                                  <Font size="11.0" />
+                                                                  <Font size="12.0" />
                                                                </font></Label>
                                                             <TextField fx:id="nameBox">
                                                                <font>
@@ -153,27 +155,18 @@
                                                          <children>
                                                             <Label text="Color" textFill="#4d4d4d">
                                                                <font>
-                                                                  <Font size="11.0" />
+                                                                  <Font size="12.0" />
                                                                </font></Label>
                                                             <ColorPicker fx:id="colorPicker" />
                                                          </children>
                                                       </HBox>
-                                                      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="45.0" spacing="10.0">
-                                                         <children>
-                                                            <Label text="Starting Date" textFill="#4d4d4d">
-                                                               <font>
-                                                                  <Font size="11.0" />
-                                                               </font></Label>
-                                                            <DatePicker fx:id="startDatePicker" prefWidth="120.0" />
-                                                         </children>
-                                                      </HBox>
                                                       <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="80.0" spacing="10.0">
                                                          <children>
-                                                            <Label text="Ending Date" textFill="#4d4d4d">
+                                                            <Label text="Deadline" textFill="#4d4d4d">
                                                                <font>
-                                                                  <Font size="11.0" />
+                                                                  <Font size="12.0" />
                                                                </font></Label>
-                                                            <DatePicker fx:id="endDatePicker" prefWidth="120.0" />
+                                                            <DatePicker fx:id="deadlinePicker" prefWidth="120.0" />
                                                          </children>
                                                       </HBox>
                                                       <Separator prefWidth="200.0">
@@ -181,27 +174,57 @@
                                                             <Insets bottom="4.0" top="4.0" />
                                                          </VBox.margin>
                                                       </Separator>
-                                                      <AnchorPane opacity="0.75" prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
+                                                      <AnchorPane prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
                                                          <children>
-                                                            <Label layoutX="14.0" layoutY="14.0" text="..." textFill="#363636" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0" />
+                                                            <HBox fx:id="newTaskTagBox" alignment="CENTER_LEFT" layoutX="21.0" layoutY="9.0" spacing="4.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0">
+                                                               <children>
+                                                                  <Label fx:id="newTaskTitle" text="name" textFill="#363636">
+                                                                     <HBox.margin>
+                                                                        <Insets right="1.0" />
+                                                                     </HBox.margin>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
                                                             <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
                                                                <children>
-                                                                  <Label text="_ AM" textFill="#757575">
+                                                                  <Label fx:id="newTaskTime" text="12:00 AM" textFill="#757575">
                                                                      <font>
                                                                         <Font name="System Bold" size="11.0" />
                                                                      </font>
                                                                   </Label>
-                                                                  <Label text="..." textFill="#4d4d4d">
+                                                                  <Label fx:id="newTaskCategory" text="category" textFill="#4d4d4d">
                                                                      <font>
                                                                         <Font name="System Italic" size="11.0" />
                                                                      </font>
                                                                   </Label>
                                                                </children>
                                                             </HBox>
-                                                            <FontIcon iconColor="#545252" iconLiteral="fltrmz-timer-16" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
-                                                            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff9d1f" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                                                            <FontIcon fx:id="newTaskIcon" iconColor="#545252" iconLiteral="fltrmz-timer-16" iconSize="17" layoutX="431.0" layoutY="35.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
+                                                            <Rectangle fx:id="newTaskRect" arcHeight="5.0" arcWidth="5.0" fill="#7e1fff" height="50.0" layoutX="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0" />
                                                          </children>
                                                       </AnchorPane>
+                                                      <Separator layoutX="10.0" layoutY="116.0" prefWidth="200.0">
+                                                         <VBox.margin>
+                                                            <Insets top="4.0" />
+                                                         </VBox.margin>
+                                                      </Separator>
+                                                      <Button fx:id="addButton" mnemonicParsing="false">
+                                                         <font>
+                                                            <Font size="11.0" />
+                                                         </font>
+                                                         <graphic>
+                                                            <HBox alignment="CENTER_LEFT" spacing="3.0">
+                                                               <children>
+                                                                  <FontIcon iconLiteral="fltfal-checkmark-16" iconSize="14" />
+                                                                  <Label text="Add">
+                                                                     <font>
+                                                                        <Font size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                         </graphic>
+                                                      </Button>
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -219,7 +242,7 @@
                   <FontIcon iconLiteral="fltral-edit-32" iconSize="16" />
                </graphic>
           </Tab>
-          <Tab closable="false" text="Agenda">
+          <Tab closable="false" text="Agenda ">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -230,7 +253,7 @@
                                  <children>
                                     <Label text="Show :">
                                        <font>
-                                          <Font size="11.0" />
+                                          <Font size="12.0" />
                                        </font></Label>
                                     <MenuButton fx:id="filterIntervalButton" mnemonicParsing="false" text="Week">
                                       <items>
@@ -295,7 +318,7 @@
                               </AnchorPane>
                               <HBox fx:id="selectedHBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="8.0" style="-fx-border-radius: 2; -fx-border-color: c8c8c8; -fx-background-color: e9e9e9;">
                                  <children>
-                                    <Label text="Tag with">
+                                    <Label text="Tag with :">
                                        <font>
                                           <Font size="11.0" />
                                        </font>

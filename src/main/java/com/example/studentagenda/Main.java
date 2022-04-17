@@ -1,15 +1,18 @@
 package com.example.studentagenda;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import org.kordamp.ikonli.javafx.FontIcon;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Main {
 
@@ -17,16 +20,13 @@ public class Main {
 
     public MenuButton startWeekSelect;
     public TextField pathBox;
-    public MenuButton addSelectButton;
-    public MenuButton addSelectCategoryButton;
-    public TextField nameBox;
-    public ColorPicker colorPicker;
-    public DatePicker startDatePicker;
-    public DatePicker endDatePicker;
+
     public MenuButton filterIntervalButton;
     public MenuButton filterStatusButton;
     public MenuButton filterCategoryButton;
     public MenuButton filterTagButton;
+
+    public VBox taskVBox;
 
     public HBox selectedHBox;
     public MenuButton applyTagButton;
@@ -34,19 +34,34 @@ public class Main {
     public Button deleteButton;
     public Button editButton;
 
-    public VBox taskVBox;
+    public MenuButton addSelectButton;
+    public MenuButton addSelectCategoryButton;
+    public Label toLabel;
 
+    public TextField nameBox;
+    public ColorPicker colorPicker;
+    public DatePicker deadlinePicker;
 
+    public Button addButton;
+    public HBox newTaskTagBox;
+    public Label newTaskTitle;
+    public Label newTaskTime;
+    public Label newTaskCategory;
+    public FontIcon newTaskIcon;
+    public Rectangle newTaskRect;
 
     private TaskView selectedTask;
 
     // icons: https://kordamp.org/ikonli/cheat-sheet-fluentui.html
 
+    public HashMap<String, Action> actionMap = new HashMap<>();
+
     public void initialize() {
-        Data.initialize();
         if (Instance == null) {
             Instance = this;
         }
+
+        setupAddView();
 
         selectedHBox.setDisable(true);
 
@@ -66,12 +81,46 @@ public class Main {
 
     }
 
+    public void setupAddView() {
+
+        // configure add task/category view switching
+        String[] options = new String[] {"Task", "Category"};
+        Action addOptionChanged = () -> {
+            System.out.println(addSelectButton.getText());
+        };
+        actionMap.put("addOptionChanged", addOptionChanged);
+        makeStickyMenuButton(addSelectButton, new ArrayList<>(List.of(options)), 0);
+
+
+        // configure req fields binding to example task
+        nameBox.setText("");
+        colorPicker.setValue(Color.VIOLET);
+        newTaskRect.setFill(Color.VIOLET);
+        nameBox.textProperty().addListener(
+            (observable, oldv, newv) -> newTaskTitle.setText(newv));
+        colorPicker.setOnAction(event -> newTaskRect.setFill(colorPicker.getValue()));
+    }
+
     public void setSelectedTask(TaskView view) {
         this.selectedTask = view;
-        if (view == null) {
-            selectedHBox.setDisable(true);
-        } else {
-            selectedHBox.setDisable(false);
+        selectedHBox.setDisable(view == null);
+    }
+
+    public void makeStickyMenuButton(MenuButton button, ArrayList<String> options, int showIndex) {
+        // clear and set show index
+        button.getItems().clear();
+        button.setText(options.get(showIndex));
+        // fill the rest
+        int index = 0;
+        for (String option: options) {
+            if (index != showIndex) {
+                MenuItem item = new MenuItem(option);
+                button.getItems().add(item);
+                final int location = index;
+                item.setOnAction(event -> makeStickyMenuButton(button, options, location));
+                actionMap.get("addOptionChanged").run();
+            }
+            index++;
         }
     }
 
