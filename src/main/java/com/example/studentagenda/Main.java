@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -50,6 +51,11 @@ public class Main {
     public FontIcon newTaskIcon;
     public Rectangle newTaskRect;
 
+    public AnchorPane configPane;
+    public HBox allTagsBox;
+    public HBox colorHBox;
+    public HBox deadlineHBox;
+
     private TaskView selectedTask;
 
     // icons: https://kordamp.org/ikonli/cheat-sheet-fluentui.html
@@ -62,6 +68,7 @@ public class Main {
         }
 
         setupAddView();
+
 
         selectedHBox.setDisable(true);
 
@@ -84,9 +91,18 @@ public class Main {
     public void setupAddView() {
 
         // configure add task/category view switching
-        String[] options = new String[] {"Task", "Category"};
+        String[] options = new String[] {"Category", "Task", "Tag"};
         Action addOptionChanged = () -> {
-            System.out.println(addSelectButton.getText());
+            if (addSelectButton.getText().equals("Category")) {
+                unhide(colorHBox);
+                hide(allTagsBox, deadlineHBox, toLabel, addSelectCategoryButton);
+            } else if (addSelectButton.getText().equals("Task")) {
+                unhide(toLabel, addSelectCategoryButton, deadlineHBox);
+                hide(allTagsBox, colorHBox);
+            } else { // Tag
+                unhide(toLabel, addSelectCategoryButton);
+                hide(allTagsBox, colorHBox, deadlineHBox);
+            }
         };
         actionMap.put("addOptionChanged", addOptionChanged);
         makeStickyMenuButton(addSelectButton, new ArrayList<>(List.of(options)), 0);
@@ -122,6 +138,21 @@ public class Main {
             }
             index++;
         }
+    }
+
+    public void hide(Node... elements) {
+        for (Node element: elements) {
+            element.setManaged(false);
+            element.setVisible(false);
+        }
+    }
+
+    public void unhide(Node... elements) {
+        for (Node element: elements) {
+            element.setManaged(true);
+            element.setVisible(true);
+        }
+
     }
 
     public static Node CacheFXML(String viewname) {

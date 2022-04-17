@@ -20,7 +20,7 @@ public class Agenda {
 
     public static Category getCategory(String target) {
         for (Category category: categories) {
-            if (category.name == target) {
+            if (category.name.equals(target)) {
                 return category;
             }
         }
@@ -30,7 +30,7 @@ public class Agenda {
     public static String getCategoryFromTask(Task element) {
         for (Category category: categories) {
             for (Task task: category.tasks) {
-                if (task.identifier == element.identifier) {
+                if (task.identifier.equals(element.identifier)) {
                     return category.name;
                 }
             }
