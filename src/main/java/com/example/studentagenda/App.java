@@ -11,6 +11,14 @@ import java.io.IOException;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
+        // load data
+        Data.initialize();
+
+        // configure Agenda
+        Agenda.initialize();
+
+        // show main view
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mainView.fxml"));
         double fixed_width = 500;
         Parent root = fxmlLoader.load();
@@ -23,8 +31,6 @@ public class App extends Application {
         stage.show();
         root.requestFocus();
 
-        // load data
-        Data.initialize();
     }
 
     public static void main(String[] args) {

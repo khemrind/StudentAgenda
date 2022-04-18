@@ -1,12 +1,22 @@
 package com.example.studentagenda;
 
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+
 import java.util.ArrayList;
 
 public class Agenda {
 
     public static Agenda Instance = new Agenda();
 
-    public static ArrayList<Category> categories = new ArrayList<>();
+    public static ArrayList<Category> base_categories = new ArrayList<>();
+
+    public static transient ArrayList<Action> onCategoriesChanged = new ArrayList<>();
+    public static transient ArrayList<Action> onTasksChanged = new ArrayList<>();
+
+    public static transient SimpleListProperty<Category> categories = new SimpleListProperty<>(
+        Instance, "categories", FXCollections.observableList(base_categories));
 
     public enum FilterInterval {
         Week,
@@ -14,8 +24,36 @@ public class Agenda {
         All
     }
 
-    public static void addCategory(String name) {
-        categories.add(new Category(name));
+    public static void initialize() {
+
+        // add registered actions to list's onChange
+        categories.get().addListener((ListChangeListener<? super Category>) event -> {
+            for (Action action: onCategoriesChanged) {
+                action.run();
+            }
+        });
+    }
+
+    public static void notifyTasksChanged() {
+        for (Action action: onTasksChanged) {
+            action.run();
+        }
+    }
+
+    public static Category addCategory(String name) {
+        Category category = new Category(name);
+        categories.add(category);
+        return category;
+    }
+
+    public static void deleteCategory(String name) {
+        int index = 0;
+        for (Category category: categories.get()) {
+            if (name.equals(category.name)) {
+                categories.get().remove(index);
+            }
+            index++;
+        }
     }
 
     public static Category getCategory(String target) {
@@ -54,7 +92,7 @@ public class Agenda {
         ArrayList<Task> output = new ArrayList<>();
         for (Category category: categories) {
             if (category.identifier.equals(element.identifier)) {
-                output = category.tasks;
+                output = category.base_tasks;
             }
         }
         return output;
@@ -67,6 +105,16 @@ public class Agenda {
         return output;
     }
 
+    public static ArrayList<String> getCategoryNames() {
+        ArrayList<String> output = new ArrayList<>();
+        for (Category category: categories) {
+            output.add(category.name);
+        }
+        return output;
+    }
 
+    public static boolean isEmpty() {
+        return (categories.isEmpty());
+    }
 
 }

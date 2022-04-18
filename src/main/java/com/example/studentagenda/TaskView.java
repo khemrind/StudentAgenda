@@ -52,7 +52,8 @@ public class TaskView {
         timeLabel.setText("12:00 AM");
         categoryLabel.setText(model.getCategoryName());
         updateStatus(model.status.get());
-        tagRect.setFill(Color.BLUEVIOLET);
+        tagRect.setFill(Agenda.getCategory(model.getCategoryName()).getColor());
+
         for (Tag tag: model.tags.get()) {
             tagHBox.getChildren().add(tag.view());
         }

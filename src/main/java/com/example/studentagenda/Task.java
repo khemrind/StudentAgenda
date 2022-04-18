@@ -17,13 +17,13 @@ public class Task extends Model {
         Missed
     }
 
-    private List<Tag> tagList = new ArrayList<>();
-
     // properties
     public SimpleStringProperty name = new SimpleStringProperty(this, "name");
     public SimpleObjectProperty<Status> status = new SimpleObjectProperty<>(this, "status");
     public SimpleObjectProperty<Date> deadline = new SimpleObjectProperty<>(this, "deadline");
-    public SimpleListProperty<Tag> tags = new SimpleListProperty<>(this, "tags", FXCollections.observableList(tagList));
+    public List<Tag> base_tags = new ArrayList<>();
+    public transient SimpleListProperty<Tag> tags = new SimpleListProperty<>(
+        this, "tags", FXCollections.observableList(base_tags));
 
     public Task() {
         name.set("new item");

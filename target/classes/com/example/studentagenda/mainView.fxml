@@ -169,12 +169,29 @@
                                                             <DatePicker fx:id="deadlinePicker" prefWidth="120.0" />
                                                          </children>
                                                       </HBox>
+                                                      <Button fx:id="addButton" mnemonicParsing="false">
+                                                         <font>
+                                                            <Font size="11.0" />
+                                                         </font>
+                                                         <graphic>
+                                                            <HBox alignment="CENTER_LEFT" spacing="3.0">
+                                                               <children>
+                                                                  <FontIcon iconLiteral="fltfal-checkmark-16" iconSize="14" />
+                                                                  <Label text="Add">
+                                                                     <font>
+                                                                        <Font size="11.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                         </graphic>
+                                                      </Button>
                                                       <Separator prefWidth="200.0">
                                                          <VBox.margin>
                                                             <Insets bottom="4.0" top="4.0" />
                                                          </VBox.margin>
                                                       </Separator>
-                                                      <AnchorPane prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
+                                                      <AnchorPane fx:id="newTaskAnchor" prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
                                                          <children>
                                                             <HBox fx:id="newTaskTagBox" alignment="CENTER_LEFT" layoutX="21.0" layoutY="9.0" spacing="4.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0">
                                                                <children>
@@ -204,20 +221,21 @@
                                                          </children>
                                                       </AnchorPane>
                                                       <HBox fx:id="allTagsBox" spacing="8.0" />
+                                                      <VBox fx:id="allCategoriesBox" />
                                                       <Separator layoutX="10.0" layoutY="116.0" prefWidth="200.0">
                                                          <VBox.margin>
                                                             <Insets top="4.0" />
                                                          </VBox.margin>
                                                       </Separator>
-                                                      <Button fx:id="addButton" mnemonicParsing="false">
+                                                      <Button mnemonicParsing="false">
                                                          <font>
                                                             <Font size="11.0" />
                                                          </font>
                                                          <graphic>
                                                             <HBox alignment="CENTER_LEFT" spacing="3.0">
                                                                <children>
-                                                                  <FontIcon iconLiteral="fltfal-checkmark-16" iconSize="14" />
-                                                                  <Label text="Add">
+                                                                  <FontIcon iconLiteral="fltral-delete-28" iconSize="14" />
+                                                                  <Label text="Delete">
                                                                      <font>
                                                                         <Font size="11.0" />
                                                                      </font>

@@ -1,6 +1,7 @@
 package com.example.studentagenda;
 
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -11,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,8 @@ import java.util.List;
 public class Main {
 
     public static Main Instance;
+
+    // region < FXML UI Elements >
 
     public MenuButton startWeekSelect;
     public TextField pathBox;
@@ -44,6 +49,7 @@ public class Main {
     public DatePicker deadlinePicker;
 
     public Button addButton;
+    public AnchorPane newTaskAnchor;
     public HBox newTaskTagBox;
     public Label newTaskTitle;
     public Label newTaskTime;
@@ -55,12 +61,13 @@ public class Main {
     public HBox allTagsBox;
     public HBox colorHBox;
     public HBox deadlineHBox;
+    public VBox allCategoriesBox;
+
+    // endregion
 
     private TaskView selectedTask;
 
     // icons: https://kordamp.org/ikonli/cheat-sheet-fluentui.html
-
-    public HashMap<String, Action> actionMap = new HashMap<>();
 
     public void initialize() {
         if (Instance == null) {
@@ -68,58 +75,91 @@ public class Main {
         }
 
         setupAddView();
+        setupAgendaView();
 
-
-        selectedHBox.setDisable(true);
-
-        // initial testing
-        taskVBox.getChildren().add(TaskView.separator("Saturday, April 22, 2022"));
-
-        Agenda.addCategory("PHIL 2010 Intro to Philosophy");
-        Category category = Agenda.getCategory("PHIL 2010 Intro to Philosophy");
-
-        Task first = new Task();
-        first.name.set("Writing Assignment 1");
-        first.tags.get().add(new Tag("stupid asf"));
-        first.status.set(Task.Status.Completed);
-        category.tasks.add(first);
-
-        TaskView.generate(taskVBox.getChildren(), category.tasks);
+        Agenda.addCategory("Miscellaneous");
 
     }
 
-    public void setupAddView() {
+    // region < Agenda Tab View >
 
-        // configure add task/category view switching
-        String[] options = new String[] {"Category", "Task", "Tag"};
-        Action addOptionChanged = () -> {
-            if (addSelectButton.getText().equals("Category")) {
-                unhide(colorHBox);
-                hide(allTagsBox, deadlineHBox, toLabel, addSelectCategoryButton);
-            } else if (addSelectButton.getText().equals("Task")) {
-                unhide(toLabel, addSelectCategoryButton, deadlineHBox);
-                hide(allTagsBox, colorHBox);
-            } else { // Tag
-                unhide(toLabel, addSelectCategoryButton);
-                hide(allTagsBox, colorHBox, deadlineHBox);
-            }
-        };
-        actionMap.put("addOptionChanged", addOptionChanged);
-        makeStickyMenuButton(addSelectButton, new ArrayList<>(List.of(options)), 0);
+    public void setupAgendaView() {
+        setSelectedTask(null);
 
-
-        // configure req fields binding to example task
-        nameBox.setText("");
-        colorPicker.setValue(Color.VIOLET);
-        newTaskRect.setFill(Color.VIOLET);
-        nameBox.textProperty().addListener(
-            (observable, oldv, newv) -> newTaskTitle.setText(newv));
-        colorPicker.setOnAction(event -> newTaskRect.setFill(colorPicker.getValue()));
     }
 
     public void setSelectedTask(TaskView view) {
         this.selectedTask = view;
         selectedHBox.setDisable(view == null);
+    }
+
+    // endregion
+
+    // region < Add View >
+
+    public void setupAddView() {
+
+        // configure initial values
+        nameBox.setText("");
+        colorPicker.setValue(Color.VIOLET);
+        deadlinePicker.setValue(null);
+        newTaskRect.setFill(Color.VIOLET);
+        addButton.setDisable(true);
+
+        // configure fields' binding to example task
+        nameBox.textProperty().addListener((observable, oldv, newv) -> {
+            newTaskTitle.setText(newv);
+            addButton.setDisable(!checkCanAdd());
+        });
+        deadlinePicker.setOnAction(event -> {
+            addButton.setDisable(!checkCanAdd());
+        });
+        colorPicker.setOnAction(event -> {
+            addButton.setDisable(!checkCanAdd());
+        });
+
+        // configure add option changes
+        String[] options = new String[] {"Category", "Task", "Tag"};
+        addSelectButton.textProperty().addListener((observable, oldv, newv) -> {
+            if (addSelectButton.getText().equals("Category")) {
+                unhide(colorHBox, allCategoriesBox);
+                hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor);
+                nameBox.setText("");
+            } else if (addSelectButton.getText().equals("Task")) {
+                unhide(toLabel, addSelectCategoryButton, deadlineHBox, newTaskAnchor);
+                hide(allTagsBox, colorHBox, allCategoriesBox);
+                nameBox.setText("");
+            } else { // Tag
+                unhide(allTagsBox);
+                hide(colorHBox, deadlineHBox, newTaskAnchor, allCategoriesBox, toLabel, addSelectCategoryButton);
+                nameBox.setText("");
+            }
+        });
+        makeStickyMenuButton(addSelectButton, new ArrayList<>(List.of(options)), 0);
+
+        // configure category changes
+        addSelectCategoryButton.textProperty().addListener((observable, oldv, newv) -> {
+            if (Agenda.isEmpty()) { return; }
+            Category category = Agenda.getCategory(addSelectCategoryButton.getText());
+            newTaskRect.setFill(category.getColor());
+        });
+        if (Agenda.isEmpty()) {
+            addSelectCategoryButton.setText("");
+            addSelectCategoryButton.getItems().clear();
+        } else {
+            makeStickyMenuButton(addSelectCategoryButton, Agenda.getCategoryNames(), 0);
+        }
+
+        // recompute after category list changes
+        Agenda.onCategoriesChanged.add(() -> {
+            if (Agenda.isEmpty()) { return; }
+            ArrayList<String> names = Agenda.getCategoryNames();
+            int location = names.indexOf(addSelectCategoryButton.getText());
+            location = (location == -1) ? 0: location;
+            makeStickyMenuButton(addSelectCategoryButton, names, location);
+        });
+
+
     }
 
     public void makeStickyMenuButton(MenuButton button, ArrayList<String> options, int showIndex) {
@@ -134,12 +174,26 @@ public class Main {
                 button.getItems().add(item);
                 final int location = index;
                 item.setOnAction(event -> makeStickyMenuButton(button, options, location));
-                actionMap.get("addOptionChanged").run();
             }
             index++;
         }
     }
 
+    public boolean checkCanAdd() {
+        if (addSelectButton.getText().equals("Category")) {
+            return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20)
+                    && (colorPicker.getValue() != null);
+        } else if (addSelectButton.getText().equals("Task")) {
+            return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20)
+                    && (deadlinePicker.getValue() != null);
+        } else { // Tag
+            return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20);
+        }
+    }
+
+    // endregion
+
+    // region < UI Functions >
     public void hide(Node... elements) {
         for (Node element: elements) {
             element.setManaged(false);
@@ -154,6 +208,10 @@ public class Main {
         }
 
     }
+
+    // endregion
+
+    // region < Base Functionality >
 
     public static Node CacheFXML(String viewname) {
         if (Data.cache.get(viewname) == null) {
@@ -191,5 +249,7 @@ public class Main {
         Thread thread = new Thread(action::run);
         thread.start();
     }
+
+    // endregion
 
 }
