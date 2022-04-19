@@ -13,12 +13,19 @@ public class Category extends Model {
     public String color; // javafx.scene.paint.Color (BLUE, RED) or hex (4d4d4d, ffffff)
     public ArrayList<Task> base_tasks = new ArrayList<>();
 
+
+//tasks is the same as base_tasks but with notification to the user, rather than just accepting the data
     public transient SimpleListProperty<Task> tasks = new SimpleListProperty<>(
             this, "tasks", FXCollections.observableList(base_tasks));
 
     public Category(String name, String color) {
         this.name = name;
+<<<<<<< Updated upstream
         this.color = color;
+=======
+        this.color = "BLUE";
+//addListner - means to notify closure (function) of any list changes to update UI, void
+>>>>>>> Stashed changes
 
         tasks.get().addListener((ListChangeListener<? super Task>) event -> {
             Agenda.notifyTasksChanged();

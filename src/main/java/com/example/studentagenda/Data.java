@@ -9,10 +9,12 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class Data {
-
+//saves location of page to a name so you place is saved
+    //hashmap???
     public static HashMap<String, Node> cache = new HashMap<>();
+    // path where is saves the json file
     public static String path = System.getProperty("user.home") + "\\Documents\\StudentAgenda.json";
-
+    //
     private static final Gson serializer = new GsonBuilder()
         .setPrettyPrinting()
         .create();

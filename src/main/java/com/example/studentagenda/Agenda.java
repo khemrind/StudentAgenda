@@ -11,16 +11,24 @@ public class Agenda {
     public static Agenda Instance = new Agenda();
 
     public static ArrayList<Category> base_categories = new ArrayList<>();
+<<<<<<< Updated upstream
     public static ArrayList<Tag> base_tags = new ArrayList<>();
+=======
+//transient- serilizer dont look, functionallity not data- thats why its action
+>>>>>>> Stashed changes
 
     public static transient ArrayList<Action> onCategoriesChanged = new ArrayList<>();
     public static transient ArrayList<Action> onTasksChanged = new ArrayList<>();
 
     public static transient SimpleListProperty<Category> categories = new SimpleListProperty<>(
         Instance, "categories", FXCollections.observableList(base_categories));
+<<<<<<< Updated upstream
     public static transient SimpleListProperty<Tag> tags = new SimpleListProperty<>(
             Instance, "tags", FXCollections.observableList(base_tags));
 
+=======
+//enum(enumeration) - numbering of catergories
+>>>>>>> Stashed changes
     public enum FilterInterval {
         Week,
         Month,
@@ -30,6 +38,7 @@ public class Agenda {
     public static void initialize() {
 
         // add registered actions to list's onChange
+        //(?) means anytype(object) that extends some class
         categories.get().addListener((ListChangeListener<? super Category>) event -> {
             for (Action action: onCategoriesChanged) {
                 action.run();
