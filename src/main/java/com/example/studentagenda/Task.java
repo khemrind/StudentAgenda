@@ -25,9 +25,8 @@ public class Task extends Model {
     public transient SimpleListProperty<Tag> tags = new SimpleListProperty<>(
         this, "tags", FXCollections.observableList(base_tags));
 
-    public Task() {
-        name.set("new item");
-        status.set(Status.InProgess);
+    public Task(String name) {
+        this.name.set("new item");
     }
 
     public String getCategoryName() {

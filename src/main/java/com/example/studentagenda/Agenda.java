@@ -11,12 +11,15 @@ public class Agenda {
     public static Agenda Instance = new Agenda();
 
     public static ArrayList<Category> base_categories = new ArrayList<>();
+    public static ArrayList<Tag> base_tags = new ArrayList<>();
 
     public static transient ArrayList<Action> onCategoriesChanged = new ArrayList<>();
     public static transient ArrayList<Action> onTasksChanged = new ArrayList<>();
 
     public static transient SimpleListProperty<Category> categories = new SimpleListProperty<>(
         Instance, "categories", FXCollections.observableList(base_categories));
+    public static transient SimpleListProperty<Tag> tags = new SimpleListProperty<>(
+            Instance, "tags", FXCollections.observableList(base_tags));
 
     public enum FilterInterval {
         Week,
@@ -40,8 +43,18 @@ public class Agenda {
         }
     }
 
-    public static Category addCategory(String name) {
-        Category category = new Category(name);
+    public static ArrayList<Task> getTasks() {
+        ArrayList<Task> output = new ArrayList<>();
+        for (Category category: categories.get()) {
+            for (Task task: category.tasks.get()) {
+                output.add(task);
+            }
+        }
+        return output;
+    }
+
+    public static Category addCategory(String name, String color) {
+        Category category = new Category(name, color);
         categories.add(category);
         return category;
     }
@@ -50,7 +63,7 @@ public class Agenda {
         int index = 0;
         for (Category category: categories.get()) {
             if (name.equals(category.name)) {
-                categories.get().remove(index);
+                categories.remove(index);
             }
             index++;
         }

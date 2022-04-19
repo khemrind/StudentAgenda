@@ -77,7 +77,9 @@ public class Main {
         setupAddView();
         setupAgendaView();
 
-        Agenda.addCategory("Miscellaneous");
+        Agenda.addCategory("Miscellaneous", "ORANGE");
+        Agenda.addCategory("CLASS 2212 Some Specific Course Title", "NAVY");
+        Agenda.addCategory("CLASS 1225 Some Specific Course Title", "4d4d4d");
 
     }
 
@@ -125,14 +127,28 @@ public class Main {
                 unhide(colorHBox, allCategoriesBox);
                 hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor);
                 nameBox.setText("");
+                // addButton function
+                addButton.setOnAction(event -> {
+                    Category cat = new Category(nameBox.getText(), colorPicker.getValue().toString());
+                    Agenda.categories.add(cat);
+                });
             } else if (addSelectButton.getText().equals("Task")) {
                 unhide(toLabel, addSelectCategoryButton, deadlineHBox, newTaskAnchor);
                 hide(allTagsBox, colorHBox, allCategoriesBox);
                 nameBox.setText("");
+                // addButton function
+                addButton.setOnAction(event -> {
+                    Task task = new Task(nameBox.getText());
+                    Agenda.getCategory(addSelectCategoryButton.getText()).tasks.add(task);
+                });
             } else { // Tag
                 unhide(allTagsBox);
                 hide(colorHBox, deadlineHBox, newTaskAnchor, allCategoriesBox, toLabel, addSelectCategoryButton);
                 nameBox.setText("");
+                // addButton function
+                addButton.setOnAction(event -> {
+
+                });
             }
         });
         makeStickyMenuButton(addSelectButton, new ArrayList<>(List.of(options)), 0);
@@ -142,6 +158,7 @@ public class Main {
             if (Agenda.isEmpty()) { return; }
             Category category = Agenda.getCategory(addSelectCategoryButton.getText());
             newTaskRect.setFill(category.getColor());
+            newTaskCategory.setText(category.name);
         });
         if (Agenda.isEmpty()) {
             addSelectCategoryButton.setText("");
@@ -157,6 +174,11 @@ public class Main {
             int location = names.indexOf(addSelectCategoryButton.getText());
             location = (location == -1) ? 0: location;
             makeStickyMenuButton(addSelectCategoryButton, names, location);
+        });
+
+        // reload tasks on list change
+        Agenda.onTasksChanged.add(() -> {
+            TaskView.generate(taskVBox.getChildren(), Agenda.getTasks());
         });
 
 

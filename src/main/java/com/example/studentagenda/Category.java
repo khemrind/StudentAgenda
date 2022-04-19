@@ -16,9 +16,9 @@ public class Category extends Model {
     public transient SimpleListProperty<Task> tasks = new SimpleListProperty<>(
             this, "tasks", FXCollections.observableList(base_tasks));
 
-    public Category(String name) {
+    public Category(String name, String color) {
         this.name = name;
-        this.color = "BLUE";
+        this.color = color;
 
         tasks.get().addListener((ListChangeListener<? super Task>) event -> {
             Agenda.notifyTasksChanged();
@@ -26,8 +26,7 @@ public class Category extends Model {
 
     }
 
-    public Color getColor() {
-        return Color.web(color);
-    }
+    public Color getColor() { return Color.web(color); }
+
 }
 
