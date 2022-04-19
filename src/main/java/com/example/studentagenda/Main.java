@@ -62,6 +62,7 @@ public class Main {
     public HBox colorHBox;
     public HBox deadlineHBox;
     public VBox allCategoriesBox;
+    public Button deleteTagButton;
 
     // endregion
 

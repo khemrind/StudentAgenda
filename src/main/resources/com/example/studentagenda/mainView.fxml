@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane prefHeight="660.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.Main">
+<AnchorPane prefHeight="660.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.Main">
    <children>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -137,7 +137,7 @@
                                        <content>
                                           <AnchorPane fx:id="configPane" minHeight="0.0" minWidth="0.0">
                                              <children>
-                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <VBox prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <children>
                                                       <HBox alignment="CENTER_LEFT" spacing="10.0">
                                                          <children>
@@ -183,9 +183,8 @@
                                        <content>
                                           <AnchorPane fx:id="configPane1" minHeight="0.0" minWidth="0.0">
                                              <children>
-                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                                                    <children>
-                                                      <Separator prefWidth="200.0" />
                                                       <AnchorPane fx:id="newTaskAnchor" prefHeight="54.0" style="-fx-border-color: #7a7a7a; -fx-border-radius: 2; -fx-background-color: #ededed;">
                                                          <children>
                                                             <HBox fx:id="newTaskTagBox" alignment="CENTER_LEFT" layoutX="21.0" layoutY="9.0" spacing="4.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0">
@@ -217,21 +216,22 @@
                                                       </AnchorPane>
                                                       <HBox fx:id="allTagsBox" spacing="8.0" />
                                                       <VBox fx:id="allCategoriesBox" />
-                                                      <Separator prefWidth="200.0" />
                                                    </children>
                                                 </VBox>
+                                                <Separator prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <Separator prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                        </content>
                                     </TitledPane>
                                  </children>
                               </AnchorPane>
-                              <HBox fx:id="selectedHBox1" alignment="CENTER_LEFT" spacing="8.0" style="-fx-border-radius: 2; -fx-border-color: c8c8c8; -fx-background-color: e9e9e9;">
+                              <HBox alignment="CENTER_LEFT" spacing="8.0" style="-fx-border-radius: 2; -fx-border-color: c8c8c8; -fx-background-color: e9e9e9;">
                                  <padding>
                                     <Insets bottom="7.0" left="9.0" right="9.0" top="7.0" />
                                  </padding>
                                  <children>
-                                    <Button fx:id="addButton1" mnemonicParsing="false">
+                                    <Button fx:id="addButton" mnemonicParsing="false">
                                        <font>
                                           <Font size="11.0" />
                                        </font>
@@ -248,7 +248,7 @@
                                           </HBox>
                                        </graphic>
                                     </Button>
-                                    <Button mnemonicParsing="false">
+                                    <Button fx:id="deleteTagButton" mnemonicParsing="false">
                                        <font>
                                           <Font size="11.0" />
                                        </font>
