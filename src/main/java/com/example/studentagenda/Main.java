@@ -75,6 +75,8 @@ public class Main {
             Instance = this;
         }
 
+        // test
+
         setupAddView();
         setupAgendaView();
 
