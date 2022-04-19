@@ -20,12 +20,8 @@ public class Category extends Model {
 
     public Category(String name, String color) {
         this.name = name;
-<<<<<<< Updated upstream
         this.color = color;
-=======
-        this.color = "BLUE";
 //addListner - means to notify closure (function) of any list changes to update UI, void
->>>>>>> Stashed changes
 
         tasks.get().addListener((ListChangeListener<? super Task>) event -> {
             Agenda.notifyTasksChanged();
