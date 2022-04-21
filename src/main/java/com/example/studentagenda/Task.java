@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Task extends Model {
+public class Task extends Model implements Comparable<Task> {
+
+    @Override
+    public int compareTo(Task task) {
+        return deadline.get().compareTo(task.deadline.get());
+    }
 
     public enum Status {
         Completed,

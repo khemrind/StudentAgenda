@@ -4,7 +4,12 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 
+import java.lang.reflect.Array;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 
 public class Agenda {
 
@@ -12,7 +17,7 @@ public class Agenda {
 
     public static ArrayList<Category> base_categories = new ArrayList<>();
     public static ArrayList<Tag> base_tags = new ArrayList<>();
-//transient- serilizer dont look, functionallity not data- thats why its action
+    //transient- serilizer dont look, functionallity not data- thats why its action
 
     public static transient ArrayList<Action> onCategoriesChanged = new ArrayList<>();
     public static transient ArrayList<Action> onTasksChanged = new ArrayList<>();
@@ -131,6 +136,28 @@ public class Agenda {
         }
         return output;
     }
+
+    public static void generate() {
+        // keep scroll placement
+        ArrayList<Node> output = new ArrayList<Node>();
+        ArrayList<Task> list = getTasks();
+        Collections.sort(list);
+        int current = getDayOfYear(list.get(0));
+        for (int index = 1; index < list.size(); index++) {
+            int next = getDayOfYear(list.get(index));
+            if (current < next) {
+                
+            }
+        }
+
+    }
+
+    private static int getDayOfYear(Task task) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(task.deadline.get());
+        return calendar.get(Calendar.DAY_OF_YEAR);
+    }
+
 
     public static boolean isEmpty() {
         return (categories.isEmpty());

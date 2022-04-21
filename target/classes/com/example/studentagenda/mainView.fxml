@@ -215,7 +215,7 @@
                                                          </children>
                                                       </AnchorPane>
                                                       <HBox fx:id="allTagsBox" spacing="8.0" />
-                                                      <VBox fx:id="allCategoriesBox" />
+                                                      <VBox fx:id="allCategoriesBox" spacing="6.0" />
                                                    </children>
                                                 </VBox>
                                                 <Separator prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

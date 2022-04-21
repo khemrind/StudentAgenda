@@ -20,7 +20,7 @@ public class Tag {
         output.setText(name);
         output.setPadding(new Insets(0,4,0,4));
         output.setTextFill(Color.web("#4d4d4d"));
-        output.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.ITALIC, 10));
+        output.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.ITALIC, 11));
         output.setStyle("-fx-background-radius: 1; -fx-background-color: #d4d4d4;");
         return output;
     }

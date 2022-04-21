@@ -126,7 +126,7 @@ public class Main {
         addSelectButton.textProperty().addListener((observable, oldv, newv) -> {
             if (addSelectButton.getText().equals("Category")) {
                 unhide(colorHBox, allCategoriesBox);
-                hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor);
+                hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox);
                 nameBox.setText("");
                 // addButton function
                 addButton.setOnAction(event -> {
@@ -148,7 +148,8 @@ public class Main {
                 nameBox.setText("");
                 // addButton function
                 addButton.setOnAction(event -> {
-
+                    Tag tag = new Tag(nameBox.getText());
+                    Agenda.tags.add(tag);
                 });
             }
         });
@@ -175,6 +176,12 @@ public class Main {
             int location = names.indexOf(addSelectCategoryButton.getText());
             location = (location == -1) ? 0: location;
             makeStickyMenuButton(addSelectCategoryButton, names, location);
+            // update box
+            allCategoriesBox.getChildren().clear();
+            for (Category category: Agenda.categories.get()) {
+                allCategoriesBox.getChildren().add(category.view());
+            }
+
         });
 
         // reload tasks on list change
@@ -182,7 +189,13 @@ public class Main {
             TaskView.generate(taskVBox.getChildren(), Agenda.getTasks());
         });
 
-
+        // reload tags on list change
+        Agenda.tags.get().addListener((ListChangeListener<? super Tag>) event -> {
+            allTagsBox.getChildren().clear();
+            for (Tag tag: Agenda.tags.get()) {
+                allTagsBox.getChildren().add(tag.view());
+            }
+        });
     }
 
     public void makeStickyMenuButton(MenuButton button, ArrayList<String> options, int showIndex) {
