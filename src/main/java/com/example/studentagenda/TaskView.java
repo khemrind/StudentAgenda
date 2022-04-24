@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.util.Pair;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,6 +67,7 @@ public class TaskView {
     }
 
     private void updateStatus(Task.Status status) {
+
         if (status == Task.Status.Completed) {
             statusIcon.setIconLiteral("fltfal-checkmark-16");
             statusIcon.setIconColor(Color.web("3a8d36"));

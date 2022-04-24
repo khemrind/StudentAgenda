@@ -1,9 +1,12 @@
 package com.example.studentagenda;
 
+import javafx.application.Application;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Agenda {
@@ -21,7 +24,16 @@ public class Agenda {
         Instance, "categories", FXCollections.observableList(base_categories));
 
     public static transient SimpleListProperty<Tag> tags = new SimpleListProperty<>(
-            Instance, "tags", FXCollections.observableList(base_tags));
+        Instance, "tags", FXCollections.observableList(base_tags));
+
+    public static boolean activeClock = true;
+
+    public static ArrayList<Action> onSecondChange = new ArrayList<>();
+
+    public static void update(Task task) {
+        // if task.deadline is before now, request dimming
+            // if task.deadline is also not completed, set to missed
+    }
 
 
 //enum(enumeration) - numbering of catergories
@@ -41,6 +53,19 @@ public class Agenda {
                 action.run();
             }
         });
+
+        // start clock in another thread
+        Main.RunAsync(() -> {
+            while(activeClock) {
+                for (Action action: onSecondChange) {
+                    action.run();
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception ignored) {}
+            }
+        });
+
     }
 
     public static void notifyTasksChanged() {
