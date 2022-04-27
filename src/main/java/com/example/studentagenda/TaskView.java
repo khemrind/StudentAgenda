@@ -18,6 +18,9 @@ import javafx.scene.text.Font;
 import javafx.util.Pair;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,10 +41,7 @@ public class TaskView {
     public void initialize() {
 
         statusIcon.setIconSize(17);
-        overlayButton.focusedProperty().addListener((observable, oldv, newv) -> {
-            if (newv == false) { removeFromSelected(); }
-        });
-        overlayButton.setOnAction((event -> publishAsSelected()));
+        overlayButton.setOnAction(event -> publishAsSelected());
     }
 
     public void assign(Task task) {
@@ -62,17 +62,22 @@ public class TaskView {
         model.name.addListener((observable, oldv, newv) -> titleLabel.setText(newv));
         model.status.addListener((observable, oldv, newv) -> updateStatus(newv));
         model.deadline.addListener((observable, oldv, newv) -> updateDeadline(newv));
+        model.time.addListener((observable, oldv, newv) -> timeLabel.setText(format(model.time.get())));
         model.tags.addListener((observable, oldv, newv) -> updateTags(newv));
     }
 
     private void updateStatus(Task.Status status) {
         if (status == Task.Status.Completed) {
+            if (LocalDateTime.now().isAfter(model.time.get())) {
+                mainPane.setOpacity(0.75);
+            } else { mainPane.setOpacity(0.75); }
             statusIcon.setIconLiteral("fltfal-checkmark-16");
             statusIcon.setIconColor(Color.web("3a8d36"));
         } else if (status == Task.Status.InProgess) {
             statusIcon.setIconLiteral("fltrmz-timer-16");
             statusIcon.setIconColor(Color.web("545252"));
         } else { // Task.Status.Missed
+            mainPane.setOpacity(0.75);
             statusIcon.setIconLiteral("fltrmz-timer-off-24");
             statusIcon.setIconColor(Color.web("da4f4f"));
         }
@@ -86,7 +91,7 @@ public class TaskView {
         Main.Instance.setSelectedTask(null);
     }
 
-    private void updateDeadline(Date deadline) {
+    private void updateDeadline(LocalDate deadline) {
         // implement
         // passed -> mainPane.setOpacity(0.75);
     }
@@ -121,6 +126,11 @@ public class TaskView {
 
         output.getChildren().addAll(indent, label, line);
         return output;
+    }
+
+    private static String format(LocalDateTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:m a");
+        return time.format(formatter);
     }
 
 }

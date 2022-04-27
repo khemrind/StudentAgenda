@@ -3,9 +3,13 @@ package com.example.studentagenda;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.scene.Node;
 
 import java.lang.reflect.Array;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -28,9 +32,13 @@ public class Agenda {
     public static transient SimpleListProperty<Tag> tags = new SimpleListProperty<>(
             Instance, "tags", FXCollections.observableList(base_tags));
 
+    public static boolean activeClock = true;
 
-//enum(enumeration) - numbering of catergories
+    public static ArrayList<Action> onSecondChange = new ArrayList<>();
 
+    public static FilterInterval interval = FilterInterval.All;
+
+    //enum(enumeration) - numbering of catergories
     public enum FilterInterval {
         Week,
         Month,
@@ -44,6 +52,28 @@ public class Agenda {
         categories.get().addListener((ListChangeListener<? super Category>) event -> {
             for (Action action: onCategoriesChanged) {
                 action.run();
+            }
+        });
+
+        // start clock in another thread
+        Main.RunAsync(() -> {
+            while(activeClock) {
+                try {
+                    for (Action action: onSecondChange) {
+                        action.run();
+                    }
+                    Thread.sleep(1000);
+                } catch (Exception ignored) {}
+            }
+        });
+
+        // update all tasks per second
+        onSecondChange.add(() -> {
+            for (Task task: getCurrentInterval()) {
+                LocalDateTime time = LocalDateTime.now();
+                if (task.time.get().isBefore(time) && task.status.get() != Task.Status.Completed) {
+                    task.status.set(Task.Status.Missed);
+                }
             }
         });
     }
@@ -62,6 +92,20 @@ public class Agenda {
             }
         }
         return output;
+    }
+
+    public static void deleteTask(Task element) {
+        for (Category category: categories.get()) {
+            int index = 0;
+            for (Task task: category.tasks.get()) {
+                if (task.identifier.equals(element.identifier)) {
+                    category.tasks.remove(index);
+                    notifyTasksChanged();
+                    return;
+                }
+                index++;
+            }
+        }
     }
 
     public static Category addCategory(String name, String color) {
@@ -122,10 +166,28 @@ public class Agenda {
         return output;
     }
 
-    public static ArrayList<Task> filter(FilterInterval interval) {
+    public static ArrayList<Task> getCurrentInterval() {
+        if (interval == FilterInterval.All) { return getTasks(); }
         ArrayList<Task> output = new ArrayList<>();
-        // implement
-        // filter by time
+        ArrayList<Task> list = getTasks();
+
+        // get interval
+        LocalDate now = LocalDate.now();
+        LocalDate later = LocalDate.now();
+        if (interval == FilterInterval.Month) {
+            later = later.plusDays(30);
+        } else { // Week
+            later = later.plusDays(7);
+        }
+
+        // fill list
+        for (Task task: list) {
+            LocalDate dl = task.deadline.get();
+            if (dl.isAfter(now) && dl.isBefore(later)) {
+                output.add(task);
+            }
+        }
+
         return output;
     }
 
@@ -137,27 +199,41 @@ public class Agenda {
         return output;
     }
 
-    public static void generate() {
-        // keep scroll placement
-        ArrayList<Node> output = new ArrayList<Node>();
-        ArrayList<Task> list = getTasks();
+    public static ArrayList<Node> generate() {
+        if (getCurrentInterval().size() == 0) { return null; }
+        // + keep scroll placement
+        ArrayList<Node> output = new ArrayList<>();
+        ArrayList<Task> list = getCurrentInterval();
         Collections.sort(list);
-        int current = getDayOfYear(list.get(0));
+
+        // base case
+        LocalDate current = list.get(0).deadline.get();
+        output.add(TaskView.separator(format(current)));
+        output.add(list.get(0).view());
+
         for (int index = 1; index < list.size(); index++) {
-            int next = getDayOfYear(list.get(index));
-            if (current < next) {
-                
+            LocalDate next = list.get(index).deadline.get();
+            if (current.getDayOfYear() < next.getDayOfYear()) {
+                // add next's date as a separator
+                output.add(TaskView.separator(format(next)));
+                // shift to the new date
+                current = next;
             }
+            output.add(list.get(index).view());
         }
+
+        return output;
 
     }
 
     private static int getDayOfYear(Task task) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(task.deadline.get());
-        return calendar.get(Calendar.DAY_OF_YEAR);
+        return task.deadline.get().getDayOfYear();
     }
 
+    private static String format(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, LLLL d");
+        return date.format(formatter);
+    }
 
     public static boolean isEmpty() {
         return (categories.isEmpty());

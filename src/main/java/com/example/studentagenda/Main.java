@@ -14,7 +14,10 @@ import javafx.util.Pair;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.lang.reflect.Array;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,7 +41,6 @@ public class Main {
     public MenuButton applyTagButton;
     public Button completeButton;
     public Button deleteButton;
-    public Button editButton;
 
     public MenuButton addSelectButton;
     public MenuButton addSelectCategoryButton;
@@ -64,6 +66,11 @@ public class Main {
     public VBox allCategoriesBox;
     public Button deleteTagButton;
 
+    public HBox timeHBox;
+    public MenuButton timeMenuButton;
+    public TextField hourField;
+    public TextField minuteField;
+
     // endregion
 
     private TaskView selectedTask;
@@ -88,15 +95,39 @@ public class Main {
 
     public void setupAgendaView() {
         setSelectedTask(null);
+        populateAgenda();
+
+        // reload agenda on task change
+        Agenda.onTasksChanged.add(() -> {
+            populateAgenda();
+        });
+
+        // delete task on delete button
+        deleteButton.setOnAction(event -> {
+            if (selectedTask != null) {
+                Agenda.deleteTask(selectedTask.model);
+            }
+        });
 
     }
 
     public void setSelectedTask(TaskView view) {
         this.selectedTask = view;
-        selectedHBox.setDisable(view == null);
+        if (selectedTask != null) {
+            System.out.println(selectedTask.model.name);
+        }
+
     }
 
-    // endregion
+    public void populateAgenda() {
+        taskVBox.getChildren().clear();
+        if (Agenda.getCurrentInterval().size() != 0) {
+            taskVBox.getChildren().addAll(Agenda.generate());
+        }
+    }
+
+
+    // endregion < Agenda Tab View >
 
     // region < Add View >
 
@@ -108,6 +139,7 @@ public class Main {
         deadlinePicker.setValue(null);
         newTaskRect.setFill(Color.VIOLET);
         addButton.setDisable(true);
+        hide(timeHBox);
 
         // configure fields' binding to example task
         nameBox.textProperty().addListener((observable, oldv, newv) -> {
@@ -120,40 +152,80 @@ public class Main {
         colorPicker.setOnAction(event -> {
             addButton.setDisable(!checkCanAdd());
         });
+        hourField.textProperty().addListener((observable, oldv, newv) -> {
+            addButton.setDisable(!checkCanAdd());
+        });
+        minuteField.textProperty().addListener((observable, oldv, newv) -> {
+            addButton.setDisable(!checkCanAdd());
+        });
 
         // configure add option changes
         String[] options = new String[] {"Category", "Task", "Tag"};
+        makeStickyMenuButton(addSelectButton, new ArrayList<>(List.of(options)), 0);
         addSelectButton.textProperty().addListener((observable, oldv, newv) -> {
-            if (addSelectButton.getText().equals("Category")) {
+            if (newv.equals("Category")) {
                 unhide(colorHBox, allCategoriesBox);
-                hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox);
+                hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox, timeHBox);
                 nameBox.setText("");
                 // addButton function
                 addButton.setOnAction(event -> {
                     Category cat = new Category(nameBox.getText(), colorPicker.getValue().toString());
                     Agenda.categories.add(cat);
+                    // clear fields
+                    RunAsync(() -> {
+                        try { Thread.sleep(500); } catch (Exception ignored) {}
+                        Queue(() -> {
+                            nameBox.setText("");
+                            colorPicker.setValue(Color.VIOLET);
+                        });
+                    });
                 });
-            } else if (addSelectButton.getText().equals("Task")) {
-                unhide(toLabel, addSelectCategoryButton, deadlineHBox, newTaskAnchor);
+            } else if (newv.equals("Task")) {
+                unhide(toLabel, addSelectCategoryButton, deadlineHBox, newTaskAnchor, timeHBox);
                 hide(allTagsBox, colorHBox, allCategoriesBox);
                 nameBox.setText("");
                 // addButton function
                 addButton.setOnAction(event -> {
                     Task task = new Task(nameBox.getText());
+                    task.deadline.set(deadlinePicker.getValue());
+                    task.time.set(LocalDateTime.of(
+                        task.deadline.get(),
+                        LocalTime.of(Integer.parseInt(hourField.getText()),Integer.parseInt(hourField.getText()))));
                     Agenda.getCategory(addSelectCategoryButton.getText()).tasks.add(task);
+                    // clear fields
+                    RunAsync(() -> {
+                        try { Thread.sleep(500); } catch (Exception ignored) {}
+                        Queue(() -> {
+                            nameBox.setText("");
+                            deadlinePicker.setValue(null);
+                            hourField.setText("11");
+                            minuteField.setText("59");
+                        });
+                    });
                 });
             } else { // Tag
                 unhide(allTagsBox);
-                hide(colorHBox, deadlineHBox, newTaskAnchor, allCategoriesBox, toLabel, addSelectCategoryButton);
+                hide(colorHBox, deadlineHBox, newTaskAnchor, allCategoriesBox, toLabel, addSelectCategoryButton, timeHBox);
                 nameBox.setText("");
                 // addButton function
                 addButton.setOnAction(event -> {
                     Tag tag = new Tag(nameBox.getText());
                     Agenda.tags.add(tag);
+                    // clear fields
+                    RunAsync(() -> {
+                        try { Thread.sleep(500); } catch (Exception ignored) {}
+                        Queue(() -> {
+                            nameBox.setText("");
+                        });
+                    });
                 });
+
             }
         });
-        makeStickyMenuButton(addSelectButton, new ArrayList<>(List.of(options)), 0);
+
+        // configure AM/PM changes
+        String[] timeOptions = new String[] {"PM", "AM"};
+        makeStickyMenuButton(timeMenuButton, new ArrayList<>(List.of(timeOptions)), 0);
 
         // configure category changes
         addSelectCategoryButton.textProperty().addListener((observable, oldv, newv) -> {
@@ -182,11 +254,6 @@ public class Main {
                 allCategoriesBox.getChildren().add(category.view());
             }
 
-        });
-
-        // reload tasks on list change
-        Agenda.onTasksChanged.add(() -> {
-            TaskView.generate(taskVBox.getChildren(), Agenda.getTasks());
         });
 
         // reload tags on list change
@@ -220,7 +287,15 @@ public class Main {
             return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20)
                     && (colorPicker.getValue() != null);
         } else if (addSelectButton.getText().equals("Task")) {
-            return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20)
+            boolean timeInRange = false;
+            if (isNumeric(hourField.getText()) && isNumeric(minuteField.getText())) {
+                int hour = Integer.parseInt(hourField.getText());
+                int minute = Integer.parseInt(minuteField.getText());
+                if (hour > 0 && hour < 13 && minute > -1 && minute < 61) {
+                    timeInRange = true;
+                }
+            }
+            return (timeInRange && nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20)
                     && (deadlinePicker.getValue() != null);
         } else { // Tag
             return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20);
@@ -284,6 +359,18 @@ public class Main {
     public static void RunAsync(Action action) {
         Thread thread = new Thread(action::run);
         thread.start();
+    }
+
+    public static boolean isNumeric(String target) {
+        if (target == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(target);
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        return true;
     }
 
     // endregion

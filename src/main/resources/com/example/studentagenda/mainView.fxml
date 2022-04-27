@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane prefHeight="660.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.Main">
+<AnchorPane prefHeight="660.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.studentagenda.Main">
    <children>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -167,6 +167,27 @@
                                                                   <Font size="12.0" />
                                                                </font></Label>
                                                             <DatePicker fx:id="deadlinePicker" prefWidth="120.0" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox fx:id="timeHBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="79.0" spacing="10.0">
+                                                         <children>
+                                                            <Label text="Time" textFill="#4d4d4d">
+                                                               <font>
+                                                                  <Font size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <TextField fx:id="hourField" layoutX="46.0" layoutY="10.0" prefWidth="40.0" text="11" />
+                                                            <Label layoutX="10.0" layoutY="14.0" text=":" textFill="#4d4d4d">
+                                                               <font>
+                                                                  <Font size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <TextField fx:id="minuteField" prefWidth="40.0" text="59" />
+                                                            <MenuButton fx:id="timeMenuButton" mnemonicParsing="false" text="PM">
+                                                              <items>
+                                                                <MenuItem mnemonicParsing="false" text="AM" />
+                                                              </items>
+                                                            </MenuButton>
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -376,23 +397,6 @@
                                              <children>
                                                 <FontIcon iconLiteral="fltral-delete-28" iconSize="14" />
                                                 <Label text="Delete">
-                                                   <font>
-                                                      <Font size="11.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                       </graphic>
-                                    </Button>
-                                    <Button fx:id="editButton" layoutX="147.0" layoutY="18.0" mnemonicParsing="false">
-                                       <font>
-                                          <Font size="11.0" />
-                                       </font>
-                                       <graphic>
-                                          <HBox alignment="CENTER_LEFT" spacing="3.0">
-                                             <children>
-                                                <FontIcon iconLiteral="fltral-edit-32" iconSize="14" />
-                                                <Label text="Edit">
                                                    <font>
                                                       <Font size="11.0" />
                                                    </font>

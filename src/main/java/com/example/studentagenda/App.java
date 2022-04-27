@@ -38,7 +38,8 @@ public class App extends Application {
     }
 
     @Override
-    public void stop(){ // application close
+    public void stop() { // application close
+        Agenda.activeClock = false;
         Data.save();
     }
 }
