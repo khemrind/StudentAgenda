@@ -219,12 +219,34 @@
                                                             </HBox>
                                                             <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">
                                                                <children>
-                                                                  <Label fx:id="newTaskTime" text="12:00 AM" textFill="#757575">
-                                                                     <font>
-                                                                        <Font name="System Bold" size="11.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                                  <Label fx:id="newTaskCategory" text="category" textFill="#4d4d4d">
+                                                                  <HBox>
+                                                                     <children>
+                                                                        <Label fx:id="newTaskHour" text="11" textFill="#757575">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="11.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <Label layoutX="10.0" layoutY="10.0" text=":" textFill="#757575">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="11.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <Label fx:id="newTaskMinute" layoutX="23.0" layoutY="10.0" text="59" textFill="#757575">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="11.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <Label fx:id="newTaskTimeHalf" layoutX="26.0" layoutY="10.0" text="PM" textFill="#757575">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="11.0" />
+                                                                           </font>
+                                                                           <HBox.margin>
+                                                                              <Insets left="3.0" />
+                                                                           </HBox.margin>
+                                                                        </Label>
+                                                                     </children>
+                                                                  </HBox>
+                                                                  <Label fx:id="newTaskCategory" layoutX="65.0" layoutY="10.0" text="category" textFill="#4d4d4d">
                                                                      <font>
                                                                         <Font name="System Italic" size="11.0" />
                                                                      </font>

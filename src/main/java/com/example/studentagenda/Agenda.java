@@ -211,11 +211,18 @@ public class Agenda {
         output.add(TaskView.separator(format(current)));
         output.add(list.get(0).view());
 
+        int year = LocalDate.now().getYear();
+
         for (int index = 1; index < list.size(); index++) {
             LocalDate next = list.get(index).deadline.get();
             if (current.getDayOfYear() < next.getDayOfYear()) {
                 // add next's date as a separator
-                output.add(TaskView.separator(format(next)));
+                if (next.getYear() != year) {
+                    output.add(TaskView.separator(format(next) + ", " + next.getYear()));
+                } else {
+                    output.add(TaskView.separator(format(next)));
+                }
+
                 // shift to the new date
                 current = next;
             }

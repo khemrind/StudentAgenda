@@ -54,10 +54,12 @@ public class Main {
     public AnchorPane newTaskAnchor;
     public HBox newTaskTagBox;
     public Label newTaskTitle;
-    public Label newTaskTime;
     public Label newTaskCategory;
     public FontIcon newTaskIcon;
     public Rectangle newTaskRect;
+    public Label newTaskHour;
+    public Label newTaskMinute;
+    public Label newTaskTimeHalf;
 
     public AnchorPane configPane;
     public HBox allTagsBox;
@@ -109,14 +111,39 @@ public class Main {
             }
         });
 
+        // setup upper menu buttons
+
+        String[] intervalOptions = new String[] {"All", "Week", "Month"};
+        makeStickyMenuButton(filterIntervalButton, new ArrayList<>(List.of(intervalOptions)), 0);
+        filterIntervalButton.textProperty().addListener((observable, oldv, newv) -> {
+            // implement
+        });
+
+        String[] statusOptions = new String[] {"All", "Completed", "Missed"};
+        makeStickyMenuButton(filterStatusButton, new ArrayList<>(List.of(statusOptions)), 0);
+        filterStatusButton.textProperty().addListener((observable, oldv, newv) -> {
+            // implement
+        });
+
+        String[] categoryOptions = new String[] {"Some class", "Some other class"};
+        makeStickyMenuButton(filterCategoryButton, new ArrayList<>(List.of(categoryOptions)), 0);
+        filterCategoryButton.textProperty().addListener((observable, oldv, newv) -> {
+            // implement
+        });
+
+        String[] tagOptions = new String[] {"woah", "cool", "banana"};
+        makeStickyMenuButton(filterTagButton, new ArrayList<>(List.of(tagOptions)), 0);
+        filterTagButton.textProperty().addListener((observable, oldv, newv) -> {
+            // implement
+        });
+
+
+
+
     }
 
     public void setSelectedTask(TaskView view) {
         this.selectedTask = view;
-        if (selectedTask != null) {
-            System.out.println(selectedTask.model.name);
-        }
-
     }
 
     public void populateAgenda() {
@@ -139,7 +166,10 @@ public class Main {
         deadlinePicker.setValue(null);
         newTaskRect.setFill(Color.VIOLET);
         addButton.setDisable(true);
-        hide(timeHBox);
+        // setup initial category creation
+        unhide(colorHBox, allCategoriesBox);
+        hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox, timeHBox);
+        nameBox.setText("");
 
         // configure fields' binding to example task
         nameBox.textProperty().addListener((observable, oldv, newv) -> {
@@ -154,9 +184,11 @@ public class Main {
         });
         hourField.textProperty().addListener((observable, oldv, newv) -> {
             addButton.setDisable(!checkCanAdd());
+            newTaskHour.setText(newv);
         });
         minuteField.textProperty().addListener((observable, oldv, newv) -> {
             addButton.setDisable(!checkCanAdd());
+            newTaskMinute.setText(newv);
         });
 
         // configure add option changes
@@ -171,14 +203,7 @@ public class Main {
                 addButton.setOnAction(event -> {
                     Category cat = new Category(nameBox.getText(), colorPicker.getValue().toString());
                     Agenda.categories.add(cat);
-                    // clear fields
-                    RunAsync(() -> {
-                        try { Thread.sleep(500); } catch (Exception ignored) {}
-                        Queue(() -> {
-                            nameBox.setText("");
-                            colorPicker.setValue(Color.VIOLET);
-                        });
-                    });
+                    clearFields();
                 });
             } else if (newv.equals("Task")) {
                 unhide(toLabel, addSelectCategoryButton, deadlineHBox, newTaskAnchor, timeHBox);
@@ -190,18 +215,9 @@ public class Main {
                     task.deadline.set(deadlinePicker.getValue());
                     task.time.set(LocalDateTime.of(
                         task.deadline.get(),
-                        LocalTime.of(Integer.parseInt(hourField.getText()),Integer.parseInt(hourField.getText()))));
+                        LocalTime.of(Integer.parseInt(hourField.getText()),Integer.parseInt(minuteField.getText()))));
                     Agenda.getCategory(addSelectCategoryButton.getText()).tasks.add(task);
-                    // clear fields
-                    RunAsync(() -> {
-                        try { Thread.sleep(500); } catch (Exception ignored) {}
-                        Queue(() -> {
-                            nameBox.setText("");
-                            deadlinePicker.setValue(null);
-                            hourField.setText("11");
-                            minuteField.setText("59");
-                        });
-                    });
+                    clearFields();
                 });
             } else { // Tag
                 unhide(allTagsBox);
@@ -211,13 +227,7 @@ public class Main {
                 addButton.setOnAction(event -> {
                     Tag tag = new Tag(nameBox.getText());
                     Agenda.tags.add(tag);
-                    // clear fields
-                    RunAsync(() -> {
-                        try { Thread.sleep(500); } catch (Exception ignored) {}
-                        Queue(() -> {
-                            nameBox.setText("");
-                        });
-                    });
+                    clearFields();
                 });
 
             }
@@ -226,6 +236,29 @@ public class Main {
         // configure AM/PM changes
         String[] timeOptions = new String[] {"PM", "AM"};
         makeStickyMenuButton(timeMenuButton, new ArrayList<>(List.of(timeOptions)), 0);
+        timeMenuButton.textProperty().addListener((observable, oldv, newv) -> {
+            newTaskTimeHalf.setText(newv);
+        });
+
+        // configure hour, minute field contraints
+        hourField.textProperty().addListener((observable, oldv, newv) -> {
+            if (newv.length() > 2) {
+                hourField.setText(newv.substring(0, 2));
+            }
+        });
+        minuteField.textProperty().addListener((observable, oldv, newv) -> {
+            if (newv.length() > 2) {
+                minuteField.setText(newv.substring(0, 2));
+            }
+        });
+        minuteField.focusedProperty().addListener((observable, oldv, newv) -> {
+            if (!newv && minuteField.getText().length() == 1) {
+                minuteField.setText("0" + minuteField.getText());
+            } else if (!newv && minuteField.getText().length() == 0) {
+                minuteField.setText("00");
+            }
+        });
+
 
         // configure category changes
         addSelectCategoryButton.textProperty().addListener((observable, oldv, newv) -> {
@@ -262,6 +295,19 @@ public class Main {
             for (Tag tag: Agenda.tags.get()) {
                 allTagsBox.getChildren().add(tag.view());
             }
+        });
+    }
+
+    public void clearFields() {
+        RunAsync(() -> {
+            try { Thread.sleep(500); } catch (Exception ignored) {}
+            Queue(() -> {
+                nameBox.setText("");
+                colorPicker.setValue(Color.VIOLET);
+                deadlinePicker.setValue(null);
+                hourField.setText("11");
+                minuteField.setText("59");
+            });
         });
     }
 

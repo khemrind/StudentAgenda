@@ -49,7 +49,7 @@ public class TaskView {
 
         // initial
         titleLabel.setText(model.name.get());
-        timeLabel.setText("12:00 AM");
+        timeLabel.setText(format(model.time.get()));
         categoryLabel.setText(model.getCategoryName());
         updateStatus(model.status.get());
         tagRect.setFill(Agenda.getCategory(model.getCategoryName()).getColor());
@@ -129,7 +129,7 @@ public class TaskView {
     }
 
     private static String format(LocalDateTime time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:m a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
         return time.format(formatter);
     }
 

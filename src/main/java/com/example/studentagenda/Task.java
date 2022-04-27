@@ -36,7 +36,7 @@ public class Task extends Model implements Comparable<Task> {
         this, "tags", FXCollections.observableList(base_tags));
 
     public Task(String name) {
-        this.name.set("new item");
+        this.name.set(name);
     }
 
     public String getCategoryName() {
