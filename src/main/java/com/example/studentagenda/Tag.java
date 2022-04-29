@@ -1,7 +1,10 @@
 package com.example.studentagenda;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -15,13 +18,37 @@ public class Tag {
         this.name = name;
     }
 
-    public Label view() {
-        Label output = new Label();
-        output.setText(name);
-        output.setPadding(new Insets(0,4,0,4));
-        output.setTextFill(Color.web("#4d4d4d"));
-        output.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.ITALIC, 11));
-        output.setStyle("-fx-background-radius: 1; -fx-background-color: #d4d4d4;");
-        return output;
+    public Node view() {
+
+        AnchorPane pane = new AnchorPane();
+
+        Button overlayButton = new Button();
+        overlayButton.setOpacity(0.25);
+        overlayButton.setOnAction(event -> {
+            Main.setSelectedTag(this);
+        });
+
+        Label label = new Label();
+        label.setText(name);
+        label.setPadding(new Insets(0,4,0,4));
+        label.setTextFill(Color.web("#4d4d4d"));
+        label.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.ITALIC, 12));
+        label.setStyle("-fx-background-radius: 1; -fx-background-color: #d4d4d4;");
+
+        pane.getChildren().add(label);
+        pane.getChildren().add(overlayButton);
+
+        AnchorPane.setLeftAnchor(label, 0d);
+        AnchorPane.setRightAnchor(label, 0d);
+        AnchorPane.setTopAnchor(label, 0d);
+        AnchorPane.setBottomAnchor(label, 0d);
+
+        AnchorPane.setLeftAnchor(overlayButton, 0d);
+        AnchorPane.setRightAnchor(overlayButton, 0d);
+        AnchorPane.setTopAnchor(overlayButton, 0d);
+        AnchorPane.setBottomAnchor(overlayButton, 0d);
+
+        return pane;
+
     }
 }

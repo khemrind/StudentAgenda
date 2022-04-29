@@ -42,6 +42,9 @@ public class TaskView {
 
         statusIcon.setIconSize(17);
         overlayButton.setOnAction(event -> publishAsSelected());
+
+        // register to Agenda
+        Agenda.registeredTasks.add(this);
     }
 
     public void assign(Task task) {
@@ -61,23 +64,18 @@ public class TaskView {
         // binding
         model.name.addListener((observable, oldv, newv) -> titleLabel.setText(newv));
         model.status.addListener((observable, oldv, newv) -> updateStatus(newv));
-        model.deadline.addListener((observable, oldv, newv) -> updateDeadline(newv));
         model.time.addListener((observable, oldv, newv) -> timeLabel.setText(format(model.time.get())));
         model.tags.addListener((observable, oldv, newv) -> updateTags(newv));
     }
 
     private void updateStatus(Task.Status status) {
         if (status == Task.Status.Completed) {
-            if (LocalDateTime.now().isAfter(model.time.get())) {
-                mainPane.setOpacity(0.75);
-            } else { mainPane.setOpacity(0.75); }
             statusIcon.setIconLiteral("fltfal-checkmark-16");
             statusIcon.setIconColor(Color.web("3a8d36"));
         } else if (status == Task.Status.InProgess) {
             statusIcon.setIconLiteral("fltrmz-timer-16");
             statusIcon.setIconColor(Color.web("545252"));
         } else { // Task.Status.Missed
-            mainPane.setOpacity(0.75);
             statusIcon.setIconLiteral("fltrmz-timer-off-24");
             statusIcon.setIconColor(Color.web("da4f4f"));
         }
@@ -87,13 +85,10 @@ public class TaskView {
         Main.Instance.setSelectedTask(this);
     }
 
-    private void removeFromSelected() {
-        Main.Instance.setSelectedTask(null);
-    }
-
-    private void updateDeadline(LocalDate deadline) {
-        // implement
-        // passed -> mainPane.setOpacity(0.75);
+    public void setPassed(boolean state) {
+        if (state) {
+            mainPane.setOpacity(0.75);
+        } else { mainPane.setOpacity(1); }
     }
 
     private void updateTags(List<Tag> tags) {

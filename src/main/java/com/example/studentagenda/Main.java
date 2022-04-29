@@ -27,7 +27,6 @@ public class Main {
 
     // region < FXML UI Elements >
 
-    public MenuButton startWeekSelect;
     public TextField pathBox;
 
     public MenuButton filterIntervalButton;
@@ -75,7 +74,9 @@ public class Main {
 
     // endregion
 
-    private TaskView selectedTask;
+    private static TaskView selectedTask;
+    private static Tag selectedTag;
+    private static Category selectedCategory;
 
     // icons: https://kordamp.org/ikonli/cheat-sheet-fluentui.html
 
@@ -86,6 +87,9 @@ public class Main {
 
         setupAddView();
         setupAgendaView();
+
+        // settings
+        pathBox.setText(Data.path);
 
         Agenda.addCategory("Miscellaneous", "ORANGE");
         Agenda.addCategory("CLASS 2212 Some Specific Course Title", "NAVY");
@@ -100,9 +104,7 @@ public class Main {
         populateAgenda();
 
         // reload agenda on task change
-        Agenda.onTasksChanged.add(() -> {
-            populateAgenda();
-        });
+        Agenda.onTasksChanged.add(this::populateAgenda);
 
         // delete task on delete button
         deleteButton.setOnAction(event -> {
@@ -111,12 +113,25 @@ public class Main {
             }
         });
 
-        // setup upper menu buttons
+        // complete task button
+        completeButton.setOnAction(event -> {
+            if (selectedTask != null) {
+                selectedTask.model.status.set(Task.Status.Completed);
+            }
+        });
 
+        // setup upper menu buttons
         String[] intervalOptions = new String[] {"All", "Week", "Month"};
         makeStickyMenuButton(filterIntervalButton, new ArrayList<>(List.of(intervalOptions)), 0);
         filterIntervalButton.textProperty().addListener((observable, oldv, newv) -> {
-            // implement
+            if (newv.equals("All")) {
+                Agenda.interval = Agenda.FilterInterval.All;
+            } else if (newv.equals("Month")) {
+                Agenda.interval = Agenda.FilterInterval.Month;
+            } else { // Week
+                Agenda.interval = Agenda.FilterInterval.Week;
+            }
+            populateAgenda();
         });
 
         String[] statusOptions = new String[] {"All", "Completed", "Missed"};
@@ -125,25 +140,40 @@ public class Main {
             // implement
         });
 
-        String[] categoryOptions = new String[] {"Some class", "Some other class"};
-        makeStickyMenuButton(filterCategoryButton, new ArrayList<>(List.of(categoryOptions)), 0);
+        makeStickyMenuButton(filterCategoryButton, new ArrayList<>(List.of(new String[] {"All"})), 0);
+        Agenda.onCategoriesChanged.add(() -> {
+            ArrayList<String> filters = Agenda.getCategoryNames();
+            filters.add(0, "All");
+            makeStickyMenuButton(filterCategoryButton, filters, 0);
+        });
         filterCategoryButton.textProperty().addListener((observable, oldv, newv) -> {
-            // implement
+            Agenda.categoryFilter = newv;
+            populateAgenda();
         });
 
-        String[] tagOptions = new String[] {"woah", "cool", "banana"};
-        makeStickyMenuButton(filterTagButton, new ArrayList<>(List.of(tagOptions)), 0);
+        makeStickyMenuButton(filterTagButton, new ArrayList<>(List.of(new String[] {"All"})), 0);
+        Agenda.onTagsChanged.add(() -> {
+            ArrayList<String> filters = Agenda.getTagNames();
+            filters.add(0, "All");
+            makeStickyMenuButton(filterTagButton, filters, 0);
+        });
         filterTagButton.textProperty().addListener((observable, oldv, newv) -> {
-            // implement
+            Agenda.tagFilter = newv;
+            populateAgenda();
         });
-
-
-
 
     }
 
-    public void setSelectedTask(TaskView view) {
-        this.selectedTask = view;
+    public static void setSelectedTask(TaskView view) {
+        selectedTask = view;
+    }
+
+    public static void setSelectedTag(Tag tag) {
+        selectedTag = tag;
+    }
+
+    public static void setSelectedCategory(Category category) {
+        selectedCategory = category;
     }
 
     public void populateAgenda() {
@@ -167,9 +197,7 @@ public class Main {
         newTaskRect.setFill(Color.VIOLET);
         addButton.setDisable(true);
         // setup initial category creation
-        unhide(colorHBox, allCategoriesBox);
-        hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox, timeHBox);
-        nameBox.setText("");
+        setupCategoryViewstate();
 
         // configure fields' binding to example task
         nameBox.textProperty().addListener((observable, oldv, newv) -> {
@@ -196,15 +224,7 @@ public class Main {
         makeStickyMenuButton(addSelectButton, new ArrayList<>(List.of(options)), 0);
         addSelectButton.textProperty().addListener((observable, oldv, newv) -> {
             if (newv.equals("Category")) {
-                unhide(colorHBox, allCategoriesBox);
-                hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox, timeHBox);
-                nameBox.setText("");
-                // addButton function
-                addButton.setOnAction(event -> {
-                    Category cat = new Category(nameBox.getText(), colorPicker.getValue().toString());
-                    Agenda.categories.add(cat);
-                    clearFields();
-                });
+                setupCategoryViewstate();
             } else if (newv.equals("Task")) {
                 unhide(toLabel, addSelectCategoryButton, deadlineHBox, newTaskAnchor, timeHBox);
                 hide(allTagsBox, colorHBox, allCategoriesBox);
@@ -229,7 +249,13 @@ public class Main {
                     Agenda.tags.add(tag);
                     clearFields();
                 });
-
+                // deleteTagButton function
+                deleteTagButton.setOnAction(event -> {
+                    if (selectedTag != null) {
+                        Agenda.tags.get().remove(selectedTag);
+                        selectedTag = null;
+                    }
+                });
             }
         });
 
@@ -298,6 +324,25 @@ public class Main {
         });
     }
 
+    public void setupCategoryViewstate() {
+        unhide(colorHBox, allCategoriesBox);
+        hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox, timeHBox);
+        nameBox.setText("");
+        // addButton function
+        addButton.setOnAction(event -> {
+            Category cat = new Category(nameBox.getText(), colorPicker.getValue().toString());
+            Agenda.categories.add(cat);
+            clearFields();
+        });
+        // deleteTagButton function
+        deleteTagButton.setOnAction(event -> {
+            if (selectedCategory != null) {
+                Agenda.categories.get().remove(selectedCategory);
+                selectedCategory = null;
+            }
+        });
+    }
+
     public void clearFields() {
         RunAsync(() -> {
             try { Thread.sleep(500); } catch (Exception ignored) {}
@@ -312,6 +357,11 @@ public class Main {
     }
 
     public void makeStickyMenuButton(MenuButton button, ArrayList<String> options, int showIndex) {
+        if (options.size() == 0) {
+            button.getItems().clear();
+            button.setText("   ");
+            return;
+        }
         // clear and set show index
         button.getItems().clear();
         button.setText(options.get(showIndex));
@@ -330,7 +380,7 @@ public class Main {
 
     public boolean checkCanAdd() {
         if (addSelectButton.getText().equals("Category")) {
-            return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20)
+            return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 40)
                     && (colorPicker.getValue() != null);
         } else if (addSelectButton.getText().equals("Task")) {
             boolean timeInRange = false;
@@ -341,7 +391,7 @@ public class Main {
                     timeInRange = true;
                 }
             }
-            return (timeInRange && nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20)
+            return (timeInRange && nameBox.getText().length() >= 3 && nameBox.getText().length() <= 40)
                     && (deadlinePicker.getValue() != null);
         } else { // Tag
             return (nameBox.getText().length() >= 3 && nameBox.getText().length() <= 20);

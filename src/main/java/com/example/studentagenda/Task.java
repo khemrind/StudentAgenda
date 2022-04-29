@@ -1,5 +1,6 @@
 package com.example.studentagenda;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -37,6 +38,9 @@ public class Task extends Model implements Comparable<Task> {
 
     public Task(String name) {
         this.name.set(name);
+        this.status.set(Status.InProgess);
+
+
     }
 
     public String getCategoryName() {

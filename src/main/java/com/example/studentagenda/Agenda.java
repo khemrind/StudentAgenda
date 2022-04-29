@@ -25,6 +25,7 @@ public class Agenda {
 
     public static transient ArrayList<Action> onCategoriesChanged = new ArrayList<>();
     public static transient ArrayList<Action> onTasksChanged = new ArrayList<>();
+    public static transient ArrayList<Action> onTagsChanged = new ArrayList<>();
 
     public static transient SimpleListProperty<Category> categories = new SimpleListProperty<>(
         Instance, "categories", FXCollections.observableList(base_categories));
@@ -34,9 +35,13 @@ public class Agenda {
 
     public static boolean activeClock = true;
 
-    public static ArrayList<Action> onSecondChange = new ArrayList<>();
+    public static ArrayList<TaskView> registeredTasks = new ArrayList<>();
 
     public static FilterInterval interval = FilterInterval.All;
+
+    public static String categoryFilter = "";
+
+    public static String tagFilter = "";
 
     //enum(enumeration) - numbering of catergories
     public enum FilterInterval {
@@ -47,10 +52,17 @@ public class Agenda {
 
     public static void initialize() {
 
-        // add registered actions to list's onChange
+        // add registered actions to category changes
         //(?) means anytype(object) that extends some class
         categories.get().addListener((ListChangeListener<? super Category>) event -> {
             for (Action action: onCategoriesChanged) {
+                action.run();
+            }
+        });
+
+        // add registered actions to tag changes
+        tags.get().addListener((ListChangeListener<? super Tag>) event -> {
+            for (Action action: onTagsChanged) {
                 action.run();
             }
         });
@@ -59,23 +71,21 @@ public class Agenda {
         Main.RunAsync(() -> {
             while(activeClock) {
                 try {
-                    for (Action action: onSecondChange) {
-                        action.run();
+                    LocalDate nowDate = LocalDate.now();
+                    LocalDateTime nowTime = LocalDateTime.now();
+                    for (TaskView view: registeredTasks) {
+                        if (nowDate.isAfter(view.model.deadline.get()) && nowTime.isAfter(view.model.time.get())) {
+                            view.setPassed(true);
+                            if (view.model.status.get().equals(Task.Status.InProgess)) {
+                                view.model.status.set(Task.Status.Missed);
+                            }
+                        }
                     }
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
                 } catch (Exception ignored) {}
             }
         });
 
-        // update all tasks per second
-        onSecondChange.add(() -> {
-            for (Task task: getCurrentInterval()) {
-                LocalDateTime time = LocalDateTime.now();
-                if (task.time.get().isBefore(time) && task.status.get() != Task.Status.Completed) {
-                    task.status.set(Task.Status.Missed);
-                }
-            }
-        });
     }
 
     public static void notifyTasksChanged() {
@@ -99,6 +109,7 @@ public class Agenda {
             int index = 0;
             for (Task task: category.tasks.get()) {
                 if (task.identifier.equals(element.identifier)) {
+                    registeredTasks.remove(task);
                     category.tasks.remove(index);
                     notifyTasksChanged();
                     return;
@@ -167,25 +178,49 @@ public class Agenda {
     }
 
     public static ArrayList<Task> getCurrentInterval() {
-        if (interval == FilterInterval.All) { return getTasks(); }
+
         ArrayList<Task> output = new ArrayList<>();
         ArrayList<Task> list = getTasks();
 
-        // get interval
-        LocalDate now = LocalDate.now();
-        LocalDate later = LocalDate.now();
-        if (interval == FilterInterval.Month) {
-            later = later.plusDays(30);
-        } else { // Week
-            later = later.plusDays(7);
+        if (interval != FilterInterval.All) {
+            // get interval
+            LocalDate now = LocalDate.now();
+            LocalDate later = LocalDate.now();
+            if (interval == FilterInterval.Month) {
+                later = later.plusDays(30);
+            } else { // Week
+                later = later.plusDays(7);
+            }
+
+            // fill list
+            for (Task task: list) {
+                LocalDate dl = task.deadline.get();
+                if (dl.isAfter(now) && dl.isBefore(later)) {
+                    output.add(task);
+                }
+            }
+        } else {
+            output = list;
         }
 
-        // fill list
-        for (Task task: list) {
-            LocalDate dl = task.deadline.get();
-            if (dl.isAfter(now) && dl.isBefore(later)) {
-                output.add(task);
-            }
+        // apply category filter
+        if (getCategoryNames().contains(categoryFilter)) {
+            output.removeIf(task -> !task.getCategoryName().equals(categoryFilter));
+        }
+
+        // apply status filter
+
+
+        // apply tag filter
+        if (getTagNames().contains(tagFilter)) {
+            output.removeIf(task -> {
+                for (Tag tag: task.base_tags) {
+                    if (tag.name == tagFilter) {
+                        return true;
+                    }
+                }
+                return false;
+            });
         }
 
         return output;
@@ -195,6 +230,14 @@ public class Agenda {
         ArrayList<String> output = new ArrayList<>();
         for (Category category: categories) {
             output.add(category.name);
+        }
+        return output;
+    }
+
+    public static ArrayList<String> getTagNames() {
+        ArrayList<String> output = new ArrayList<>();
+        for (Tag tag: base_tags) {
+            output.add(tag.name);
         }
         return output;
     }
@@ -215,7 +258,7 @@ public class Agenda {
 
         for (int index = 1; index < list.size(); index++) {
             LocalDate next = list.get(index).deadline.get();
-            if (current.getDayOfYear() < next.getDayOfYear()) {
+            if (current.getYear() < next.getYear() || current.getDayOfYear() < next.getDayOfYear()) {
                 // add next's date as a separator
                 if (next.getYear() != year) {
                     output.add(TaskView.separator(format(next) + ", " + next.getYear()));
