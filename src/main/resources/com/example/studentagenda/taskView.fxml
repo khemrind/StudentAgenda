@@ -18,6 +18,11 @@
                   <Insets right="1.0" />
                </HBox.margin>
             </Label>
+            <HBox fx:id="tagBox" spacing="3.0">
+               <HBox.margin>
+                  <Insets left="3.0" />
+               </HBox.margin>
+            </HBox>
          </children>
       </HBox>
       <HBox layoutX="14.0" layoutY="33.0" spacing="5.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="20.0">

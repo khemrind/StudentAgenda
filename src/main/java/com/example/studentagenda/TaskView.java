@@ -37,6 +37,7 @@ public class TaskView {
     public Rectangle tagRect;
     public Button overlayButton;
     public AnchorPane mainPane;
+    public HBox tagBox;
 
     public void initialize() {
 
@@ -82,7 +83,7 @@ public class TaskView {
     }
 
     private void publishAsSelected() {
-        Main.Instance.setSelectedTask(this);
+        Main.setSelectedTask(this);
     }
 
     public void setPassed(boolean state) {
@@ -92,8 +93,10 @@ public class TaskView {
     }
 
     private void updateTags(List<Tag> tags) {
-        // implement
-        // edit fxml to make the box just one box; exclude title label
+        tagBox.getChildren().clear();
+        for (Tag tag: tags) {
+            tagBox.getChildren().add(tag.view());
+        }
     }
 
     public static void generate(ObservableList<Node> container, ArrayList<Task> tasks) {

@@ -60,6 +60,9 @@ public class Main {
     public Label newTaskMinute;
     public Label newTaskTimeHalf;
 
+    public HBox otherBox;
+    public Button clearButton;
+
     public AnchorPane configPane;
     public HBox allTagsBox;
     public HBox colorHBox;
@@ -77,6 +80,7 @@ public class Main {
     private static TaskView selectedTask;
     private static Tag selectedTag;
     private static Category selectedCategory;
+
 
     // icons: https://kordamp.org/ikonli/cheat-sheet-fluentui.html
 
@@ -191,7 +195,6 @@ public class Main {
     public void setupAddView() {
 
         // configure initial values
-        nameBox.setText("");
         colorPicker.setValue(Color.VIOLET);
         deadlinePicker.setValue(null);
         newTaskRect.setFill(Color.VIOLET);
@@ -226,9 +229,8 @@ public class Main {
             if (newv.equals("Category")) {
                 setupCategoryViewstate();
             } else if (newv.equals("Task")) {
-                unhide(toLabel, addSelectCategoryButton, deadlineHBox, newTaskAnchor, timeHBox);
-                hide(allTagsBox, colorHBox, allCategoriesBox);
-                nameBox.setText("");
+                unhide(toLabel, addSelectCategoryButton, deadlineHBox, newTaskAnchor, timeHBox, otherBox);
+                hide(allTagsBox, colorHBox, allCategoriesBox, deleteTagButton);
                 // addButton function
                 addButton.setOnAction(event -> {
                     Task task = new Task(nameBox.getText());
@@ -240,9 +242,8 @@ public class Main {
                     clearFields();
                 });
             } else { // Tag
-                unhide(allTagsBox);
-                hide(colorHBox, deadlineHBox, newTaskAnchor, allCategoriesBox, toLabel, addSelectCategoryButton, timeHBox);
-                nameBox.setText("");
+                unhide(allTagsBox, deleteTagButton);
+                hide(colorHBox, deadlineHBox, newTaskAnchor, allCategoriesBox, toLabel, addSelectCategoryButton, timeHBox, otherBox);
                 // addButton function
                 addButton.setOnAction(event -> {
                     Tag tag = new Tag(nameBox.getText());
@@ -285,7 +286,6 @@ public class Main {
             }
         });
 
-
         // configure category changes
         addSelectCategoryButton.textProperty().addListener((observable, oldv, newv) -> {
             if (Agenda.isEmpty()) { return; }
@@ -300,6 +300,30 @@ public class Main {
             makeStickyMenuButton(addSelectCategoryButton, Agenda.getCategoryNames(), 0);
         }
 
+        // setup tag
+        applyTagButton.setText(" ");
+        Agenda.onTagsChanged.add(() -> {
+            applyTagButton.getItems().clear();
+            if (Agenda.getTagNames().size() == 0) {
+                applyTagButton.setText("  ");
+                return;
+            }
+            for (String option: Agenda.getTagNames()) {
+                MenuItem item = new MenuItem(option);
+                applyTagButton.getItems().add(item);
+                item.setOnAction(event -> {
+                    ArrayList<String> labels = new ArrayList<>();
+                    for (Node node: newTaskTagBox.getChildren()) {
+                        labels.add(((Label) node).getText());
+                    }
+                    if (!labels.contains(option)) {
+                        Tag tag = new Tag(option);
+                        newTaskTagBox.getChildren().add(tag.minimal_view());
+                    }
+                });
+            }
+        });
+
         // recompute after category list changes
         Agenda.onCategoriesChanged.add(() -> {
             if (Agenda.isEmpty()) { return; }
@@ -312,7 +336,6 @@ public class Main {
             for (Category category: Agenda.categories.get()) {
                 allCategoriesBox.getChildren().add(category.view());
             }
-
         });
 
         // reload tags on list change
@@ -322,12 +345,14 @@ public class Main {
                 allTagsBox.getChildren().add(tag.view());
             }
         });
+
+        // clear button functionality
+        clearButton.setOnAction(event -> clearFields());
     }
 
     public void setupCategoryViewstate() {
-        unhide(colorHBox, allCategoriesBox);
-        hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox, timeHBox);
-        nameBox.setText("");
+        unhide(colorHBox, allCategoriesBox, deleteTagButton);
+        hide(deadlineHBox, toLabel, addSelectCategoryButton, newTaskAnchor, allTagsBox, timeHBox, otherBox);
         // addButton function
         addButton.setOnAction(event -> {
             Category cat = new Category(nameBox.getText(), colorPicker.getValue().toString());
@@ -347,11 +372,12 @@ public class Main {
         RunAsync(() -> {
             try { Thread.sleep(500); } catch (Exception ignored) {}
             Queue(() -> {
-                nameBox.setText("");
+                nameBox.clear();
                 colorPicker.setValue(Color.VIOLET);
                 deadlinePicker.setValue(null);
                 hourField.setText("11");
                 minuteField.setText("59");
+                newTaskTagBox.getChildren().clear();
             });
         });
     }

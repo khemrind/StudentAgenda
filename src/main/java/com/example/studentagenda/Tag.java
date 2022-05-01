@@ -18,6 +18,16 @@ public class Tag {
         this.name = name;
     }
 
+    public Node minimal_view() {
+        Label label = new Label();
+        label.setText(name);
+        label.setPadding(new Insets(0,4,1,4));
+        label.setTextFill(Color.web("#4d4d4d"));
+        label.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.ITALIC, 11));
+        label.setStyle("-fx-background-radius: 1; -fx-background-color: #d4d4d4;");
+        return label;
+    }
+
     public Node view() {
 
         AnchorPane pane = new AnchorPane();
