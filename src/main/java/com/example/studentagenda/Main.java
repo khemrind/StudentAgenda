@@ -96,8 +96,6 @@ public class Main {
         pathBox.setText(Data.path);
 
         Agenda.addCategory("Miscellaneous", "ORANGE");
-        Agenda.addCategory("CLASS 2212 Some Specific Course Title", "NAVY");
-        Agenda.addCategory("CLASS 1225 Some Specific Course Title", "4d4d4d");
 
     }
 
