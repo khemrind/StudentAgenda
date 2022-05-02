@@ -59,7 +59,7 @@ public class TaskView {
         tagRect.setFill(Agenda.getCategory(model.getCategoryName()).getColor());
 
         for (Tag tag: model.tags.get()) {
-            tagHBox.getChildren().add(tag.view());
+            tagHBox.getChildren().add(tag.minimal_view());
         }
 
         // binding

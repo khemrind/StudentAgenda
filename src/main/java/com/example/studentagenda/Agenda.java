@@ -41,6 +41,8 @@ public class Agenda {
 
     public static String categoryFilter = "";
 
+    public static String statusFilter = "";
+
     public static String tagFilter = "";
 
     //enum(enumeration) - numbering of catergories
@@ -209,17 +211,23 @@ public class Agenda {
         }
 
         // apply status filter
-
+        if (statusFilter.equals("Missed")) {
+            output.removeIf(task -> !(task.status.get() == Task.Status.Missed));
+        } else if (statusFilter.equals("Completed")) {
+            output.removeIf(task -> !(task.status.get() == Task.Status.Completed));
+        } else if (statusFilter.equals("In Progress")) {
+            output.removeIf(task -> !(task.status.get() == Task.Status.InProgess));
+        }
 
         // apply tag filter
         if (getTagNames().contains(tagFilter)) {
             output.removeIf(task -> {
                 for (Tag tag: task.base_tags) {
-                    if (tag.name == tagFilter) {
-                        return true;
+                    if (tag.name.equals(tagFilter)) {
+                        return false;
                     }
                 }
-                return false;
+                return true;
             });
         }
 

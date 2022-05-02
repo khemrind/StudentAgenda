@@ -136,10 +136,11 @@ public class Main {
             populateAgenda();
         });
 
-        String[] statusOptions = new String[] {"All", "Completed", "Missed"};
+        String[] statusOptions = new String[] {"All", "Completed", "In Progess", "Missed"};
         makeStickyMenuButton(filterStatusButton, new ArrayList<>(List.of(statusOptions)), 0);
         filterStatusButton.textProperty().addListener((observable, oldv, newv) -> {
-            // implement
+            Agenda.statusFilter = newv;
+            populateAgenda();
         });
 
         makeStickyMenuButton(filterCategoryButton, new ArrayList<>(List.of(new String[] {"All"})), 0);
@@ -233,6 +234,11 @@ public class Main {
                 addButton.setOnAction(event -> {
                     Task task = new Task(nameBox.getText());
                     task.deadline.set(deadlinePicker.getValue());
+                    for (Node node: newTaskTagBox.getChildren()) {
+                        Label label = (Label) node;
+                        Tag tag = new Tag(label.getText());
+                        task.tags.add(tag);
+                    }
                     task.time.set(LocalDateTime.of(
                         task.deadline.get(),
                         LocalTime.of(Integer.parseInt(hourField.getText()),Integer.parseInt(minuteField.getText()))));

@@ -13,15 +13,9 @@
    <children>
       <HBox fx:id="tagHBox" alignment="CENTER_LEFT" layoutX="21.0" layoutY="9.0" spacing="4.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="8.0">
          <children>
-            <Label fx:id="titleLabel" text="Assignment 5 The Essentials of Writing" textFill="#363636">
-               <HBox.margin>
-                  <Insets right="1.0" />
-               </HBox.margin>
+            <Label fx:id="titleLabel" text="" textFill="#363636">
             </Label>
             <HBox fx:id="tagBox" spacing="3.0">
-               <HBox.margin>
-                  <Insets left="3.0" />
-               </HBox.margin>
             </HBox>
          </children>
       </HBox>
@@ -32,7 +26,7 @@
                   <Font name="System Bold" size="11.0" />
                </font>
             </Label>
-            <Label fx:id="categoryLabel" text="Intro to Philosophy PHIL 2010 W04" textFill="#4d4d4d">
+            <Label fx:id="categoryLabel" text="" textFill="#4d4d4d">
                <font>
                   <Font name="System Italic" size="11.0" />
                </font>
